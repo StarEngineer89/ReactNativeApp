@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "react-native start",
+    "start": "expo start --dev-client",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
@@ -51,7 +51,9 @@
     "react-native-svg": "12.1.1",
     "react-native-text-ticker": "^1.14.0",
     "react-native-uuid": "^2.0.1",
-    "expo-facebook": "~12.1.0"
+    "expo-facebook": "~12.1.0",
+    "expo-splash-screen": "~0.14.1",
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

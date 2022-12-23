@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import Animated, { FadeInUp, FadeOutUp, FadingTransition } from 'react-native-reanimated';
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { HStack, Spacer } from 'react-native-stacks';
 import { Chevron } from 'components/svgs';
 import { StyleGuide } from 'src/config';

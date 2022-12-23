@@ -3,6 +3,7 @@
     "name": "v2voca",
     "slug": "v2voca",
     "version": "1.0.0",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "splash": {

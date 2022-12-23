@@ -3,8 +3,7 @@
     "start": "expo start --dev-client",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.13.0",

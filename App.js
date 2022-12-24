@@ -12,6 +12,7 @@ import AppLoading from "expo-app-loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useAuth } from "src/hooks";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 LogBox.ignoreLogs([
@@ -56,6 +57,7 @@ const ConnectedApp = connectActionSheet(App);
 
 export default () => {
   return (
+    <GestureHandlerRootView style={{flex: 1}}>
     <AuthProvider>
       <MentorProvider>
         <PupilProvider>
@@ -65,5 +67,7 @@ export default () => {
         </PupilProvider>
       </MentorProvider>
     </AuthProvider>
+    </GestureHandlerRootView>
+
   );
 };

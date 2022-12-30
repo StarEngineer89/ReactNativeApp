@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "391143990532",
+    "project_id": "vocaloo-app-firebase",
+    "storage_bucket": "vocaloo-app-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391143990532:android:533a567db6a2f0a82f5c51",
+        "android_client_info": {
+          "package_name": "com.famak3z.ak3zsfmx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASu1CthgU4J2TfJkQNUqGwzZLdDGY0wb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.famak3z.ak3zsfmx"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

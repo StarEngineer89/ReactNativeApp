@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Platform, ViewProps, ImageBackground, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewProps, ImageBackground, ViewStyle } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { palette } from 'src/config';
 import { images } from 'src/constants';
+import { isPad } from 'src/functions';
 
 export interface ContainerViewProps extends ViewProps {
   header?: Boolean;
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   header: {
-    paddingTop: Platform.OS === 'ios' ? 44 : 56,
+    paddingTop: isPad() ? 44 : 56,
   },
 });
 

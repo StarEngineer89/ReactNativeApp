@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, PropsWithChildren } from 'react';
 import { View, StyleSheet, Modal, Animated } from 'react-native';
 import { palette } from 'src/config';
 import { isTablet } from 'src/functions';
@@ -9,7 +9,13 @@ const SPACING = isTablet() ? 10 : 5;
 const MODAL_WIDTH = isTablet() ? 238 : 175;
 const MODAL_HEIGHT = isTablet() ? 170 : 120;
 
-const ConfirmModal = ({ visible, onCancel = () => {}, onConfirm = () => {}, children }) => {
+interface Props {
+  visible: boolean;
+  onCancel?: () => void;
+  onConfirm?: () => void;
+}
+
+const ConfirmModal = ({ visible, onCancel = () => {}, onConfirm = () => {}, children }: PropsWithChildren<Props>) => {
   const [showModal, setShowModal] = React.useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
 
@@ -44,20 +50,14 @@ const ConfirmModal = ({ visible, onCancel = () => {}, onConfirm = () => {}, chil
               <HStack>
                 <Spacer />
                 <Button
-                  variant='filled'
-                  size='sm'
-                  title='Cancel'
+                  variant="filled"
+                  size="sm"
+                  title="Cancel"
                   onPress={onCancel}
                   // style={{ width: (MODAL_WIDTH - 20) / 2 }}
                 />
                 <Spacer />
-                <Button
-                  variant='filled'
-                  size='sm'
-                  title='Delete'
-                  onPress={onConfirm}
-                  buttonStyle={{ backgroundColor: palette.danger }}
-                />
+                <Button variant="filled" size="sm" title="Delete" onPress={onConfirm} buttonStyle={{ backgroundColor: palette.danger }} />
                 <Spacer />
               </HStack>
             </View>

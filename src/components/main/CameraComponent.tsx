@@ -28,18 +28,13 @@ const CameraComponent = () => {
       const options = { quality: 0.5, skipProcessing: true };
       let photo = await cam.current.takePictureAsync(options);
 
-      const source = photo.uri;
       cam.current.pausePreview();
       setpause(true);
 
-      const manipResult = await ImageManipulator.manipulateAsync(
-        photo.uri,
-        [{ resize: { width: photo.width < 720 ? photo.width : 720 } }],
-        {
-          compress: 0.8,
-          format: ImageManipulator.SaveFormat.JPEG,
-        }
-      );
+      const manipResult = await ImageManipulator.manipulateAsync(photo.uri, [{ resize: { width: photo.width < 720 ? photo.width : 720 } }], {
+        compress: 0.8,
+        format: ImageManipulator.SaveFormat.JPEG,
+      });
 
       setImage(manipResult.uri);
     }
@@ -54,28 +49,25 @@ const CameraComponent = () => {
           <TouchableOpacity
             onPress={() => {
               setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
-            }}
-          >
-            <MaterialIcons name='flip-camera-ios' size={isTablet ? 60 : 36} color={palette.primary} />
+            }}>
+            <MaterialIcons name="flip-camera-ios" size={isTablet ? 60 : 36} color={palette.primary} />
           </TouchableOpacity>
           <Spacer />
           <TouchableOpacity onPress={() => navigateBack()}>
-            <MaterialIcons name='close' size={isTablet ? 60 : 36} color={palette.white} />
+            <MaterialIcons name="close" size={isTablet ? 60 : 36} color={palette.white} />
           </TouchableOpacity>
           {isLandscape && <Spacer />}
         </HStack>
 
         <Spacer />
-        <HStack
-          style={{ padding: 10, paddingBottom: insets.bottom + 20, width, backgroundColor: 'rgba(20, 20, 52, 0.5)' }}
-        >
+        <HStack style={{ padding: 10, paddingBottom: insets.bottom + 20, width, backgroundColor: 'rgba(20, 20, 52, 0.5)' }}>
           {isLandscape && <Spacer />}
           <View>
             {pause && (
               <Button
-                variant='gradient'
-                title='Retake'
-                size='md'
+                variant="gradient"
+                title="Retake"
+                size="md"
                 onPress={() => {
                   cam.current.resumePreview();
                   setpause(false);
@@ -100,11 +92,11 @@ const CameraComponent = () => {
           <View>
             {pause && (
               <Button
-                variant='filled'
-                title='Select'
-                size='md'
+                variant="filled"
+                title="Select"
+                size="md"
                 onPress={() => {
-                  const route = navigationRef.current.getCurrentRoute();
+                  const route: any = navigationRef.current.getCurrentRoute();
                   cam.current.resumePreview();
                   setpause(false);
 

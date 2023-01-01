@@ -1,16 +1,14 @@
-import api from "src/api/server";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import actions from "./_actionNames";
-import { navigationRef } from "src/refs";
-import { DrawerActions } from "@react-navigation/native";
-import {
-  anonymousLogin,
-  anonymousLogOut,
-  checkFirebaseAuth,
-} from "src/api/firebase";
+import api from 'src/api/server';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import actions from './_actionNames';
+import { navigationRef } from 'src/refs';
+import { DrawerActions } from '@react-navigation/native';
+import { anonymousLogin, anonymousLogOut, checkFirebaseAuth } from 'src/api/firebase';
+import { AxiosError } from 'axios';
+import { IAuthDispatch } from './_types';
 
-const handleAuthError = (error) => {
-  let payload = "Network Error";
+const handleAuthError = (error: AxiosError) => {
+  let payload = 'Network Error';
 
   if (error.response) {
     if (error.response.status === 400) {
@@ -24,9 +22,9 @@ const handleAuthError = (error) => {
 };
 
 const __checkVersion = async () => {
-  const __version = await AsyncStorage.getItem("APP_VERSION");
+  const __version = await AsyncStorage.getItem('APP_VERSION');
 
-  if (__version !== "MVP@V2_2") {
+  if (__version !== 'MVP@V2_2') {
     const allKeys = await AsyncStorage.getAllKeys();
 
     await AsyncStorage.multiRemove(allKeys);
@@ -34,24 +32,24 @@ const __checkVersion = async () => {
 };
 
 const __checkShowOnBoaring = async () => {
-  const status = await AsyncStorage.getItem("SHOW_TUTORIAL");
+  const status = await AsyncStorage.getItem('SHOW_TUTORIAL');
 
   if (!status) return true;
 
-  return status !== "-1";
+  return status !== '-1';
 };
 
-const signup = (dispatch) => async (name, email, password) => {
+const signup = (dispatch: IAuthDispatch) => async (name: string, email: string, password: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.post("/users/api/signup", {
+    const response = await api.post('/users/api/signup', {
       name,
       email,
       password,
     });
-    await AsyncStorage.setItem("TOKEN", response.data.token);
-    await AsyncStorage.setItem("APP_VERSION", "MVP@V2_2");
+    await AsyncStorage.setItem('TOKEN', response.data.token);
+    await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
     await anonymousLogin();
 
@@ -61,11 +59,11 @@ const signup = (dispatch) => async (name, email, password) => {
   }
 };
 
-const socialLogin = (dispatch) => async (name, email, social, type, image) => {
+const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: string, social: string, type: string, image: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.post("/users/api/social-login", {
+    const response = await api.post('/users/api/social-login', {
       name,
       email,
       social,
@@ -73,8 +71,8 @@ const socialLogin = (dispatch) => async (name, email, social, type, image) => {
       image,
     });
 
-    await AsyncStorage.setItem("TOKEN", response.data.token);
-    await AsyncStorage.setItem("APP_VERSION", "MVP@V2_2");
+    await AsyncStorage.setItem('TOKEN', response.data.token);
+    await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
     await anonymousLogin();
     dispatch({ type: actions.LOGIN_SUCCEEDED });
@@ -83,13 +81,13 @@ const socialLogin = (dispatch) => async (name, email, social, type, image) => {
   }
 };
 
-const login = (dispatch) => async (email, password) => {
+const login = (dispatch: IAuthDispatch) => async (email: string, password: string) => {
   try {
-    const response = await api.post("/users/api/login", { email, password });
+    const response = await api.post('/users/api/login', { email, password });
 
-    await AsyncStorage.setItem("TOKEN", response.data.token);
+    await AsyncStorage.setItem('TOKEN', response.data.token);
 
-    await AsyncStorage.setItem("APP_VERSION", "MVP@V2_2");
+    await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
     await anonymousLogin();
 
@@ -97,7 +95,7 @@ const login = (dispatch) => async (email, password) => {
   } catch (error) {
     if (error.reponse && error.response.status === 401) {
       dispatch({
-        type: "UPDATE_ATTEMPTS",
+        type: 'UPDATE_ATTEMPTS',
         payload: error.response.data.attempts,
       });
     }
@@ -106,16 +104,16 @@ const login = (dispatch) => async (email, password) => {
   }
 };
 
-const resetPassword = (dispatch) => async (email) => {
+const resetPassword = (dispatch: IAuthDispatch) => async (email: string) => {
   try {
-    const response = await api.put("/users/api/reset-password", { email });
+    await api.put('/users/api/reset-password', { email });
     dispatch({ type: actions.RESET_COMPLETED, payload: true });
   } catch (error) {
     dispatch({ type: actions.AUTH_ERROR, payload: handleAuthError(error) });
   }
 };
 
-const autoSignIn = (dispatch) => async () => {
+const autoSignIn = (dispatch: IAuthDispatch) => async () => {
   try {
     await __checkVersion();
 
@@ -123,9 +121,9 @@ const autoSignIn = (dispatch) => async () => {
 
     const showOnBoarding = await __checkShowOnBoaring();
 
-    const token = await AsyncStorage.getItem("TOKEN");
+    const token = await AsyncStorage.getItem('TOKEN');
 
-    await checkFirebaseAuth(async (res) => {
+    await checkFirebaseAuth(async (res: boolean) => {
       if (!res) {
         await anonymousLogin();
       }
@@ -139,18 +137,18 @@ const autoSignIn = (dispatch) => async () => {
   }
 };
 
-const signout = (dispatch) => async () => {
-  await AsyncStorage.removeItem("TOKEN");
+const signout = (dispatch: IAuthDispatch) => async () => {
+  await AsyncStorage.removeItem('TOKEN');
 
   await anonymousLogOut();
   dispatch({ type: actions.SIGN_OUT });
 };
 
-const getProfiles = (dispatch) => async () => {
+const getProfiles = (dispatch: IAuthDispatch) => async () => {
   dispatch({ type: actions.GET_PROFILES_STARTED });
 
   try {
-    const response = await api.get("/users/api/me");
+    const response = await api.get('/users/api/me');
 
     if (response.data.success) {
       setTimeout(() => {
@@ -163,11 +161,8 @@ const getProfiles = (dispatch) => async () => {
       dispatch({ type: actions.GET_PROFILES_FAILED });
     }
   } catch (error) {
-    if (
-      (!error.reponse || error.response.status === 401) &&
-      error.message !== "Network Error"
-    ) {
-      await AsyncStorage.removeItem("TOKEN");
+    if ((!error.reponse || error.response.status === 401) && error.message !== 'Network Error') {
+      await AsyncStorage.removeItem('TOKEN');
 
       dispatch({ type: actions.SIGN_OUT });
     } else {
@@ -176,44 +171,44 @@ const getProfiles = (dispatch) => async () => {
   }
 };
 
-const resendVerification = (dispatch) => async () => {
+const resendVerification = () => async () => {
   try {
-    await api.put("/users/api/me/resend-verification");
+    await api.put('/users/api/me/resend-verification');
   } catch (error) {}
 };
 
-const completeOnBoarding = (dispatch) => async () => {
+const completeOnBoarding = (dispatch: IAuthDispatch) => async () => {
   try {
-    await AsyncStorage.setItem("SHOW_TUTORIAL", "-1");
+    await AsyncStorage.setItem('SHOW_TUTORIAL', '-1');
 
     dispatch({ type: actions.SET_ONBOARDING_STATUS, payload: false });
   } catch (error) {}
 };
 
-const clearError = (dispatch) => () => {
+const clearError = (dispatch: IAuthDispatch) => () => {
   dispatch({ type: actions.CLEAR_ERROR });
 };
 
-const clearReset = (dispatch) => () => {
+const clearReset = (dispatch: IAuthDispatch) => () => {
   dispatch({ type: actions.RESET_CLEAR });
 };
 
-const selectProfile = (dispatch) => (profile) => {
+const selectProfile = (dispatch: IAuthDispatch) => profile => {
   dispatch({ type: actions.SELECT_PROFILE, payload: profile });
 };
 
-const changePassword = (dispatch) => async (old, password) => {
+const changePassword = (dispatch: IAuthDispatch) => async (old: string, password: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.put("/users/api/update-password", {
+    const response = await api.put('/users/api/update-password', {
       old,
       password,
     });
 
     if (response.data.success) {
       setTimeout(async () => {
-        await AsyncStorage.removeItem("TOKEN");
+        await AsyncStorage.removeItem('TOKEN');
         dispatch({ type: actions.SIGN_OUT });
       }, 2000);
     } else {
@@ -223,7 +218,7 @@ const changePassword = (dispatch) => async (old, password) => {
   }
 };
 
-const switchUser = (dispatch) => () => {
+const switchUser = (dispatch: IAuthDispatch) => () => {
   navigationRef.current.dispatch(DrawerActions.closeDrawer());
 
   setTimeout(() => {
@@ -231,13 +226,13 @@ const switchUser = (dispatch) => () => {
   }, 500);
 };
 
-const deactivate = (dispatch) => async () => {
+const deactivate = (dispatch: IAuthDispatch) => async () => {
   dispatch({ type: actions.LOADING_STARTED });
   try {
-    await api.put("/users/api/deactivate");
+    await api.put('/users/api/deactivate');
 
     setTimeout(async () => {
-      await AsyncStorage.removeItem("TOKEN");
+      await AsyncStorage.removeItem('TOKEN');
       dispatch({ type: actions.SIGN_OUT });
     }, 2000);
   } catch (error) {

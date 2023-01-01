@@ -1,5 +1,5 @@
-import { fonts, palette } from "src/config";
-import { isTablet as _isTablet } from "src/functions";
+import { fonts, palette } from 'src/config';
+import { isTablet as _isTablet } from 'src/functions';
 
 const isTablet = _isTablet();
 
@@ -7,13 +7,13 @@ export default {
   base: {
     container: {
       borderWidth: 1,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
       borderColor: palette.gradient_1,
-      overflow: "hidden",
+      overflow: 'hidden',
     },
     typography: {
-      position: "absolute",
+      position: 'absolute',
       fontFamily: fonts.medium,
       color: palette.white,
     },
@@ -62,6 +62,7 @@ export default {
         backgroundColor: palette.primary,
         borderColor: palette.primary,
       },
+      gradient: {},
       outline: {
         backgroundColor: palette.white,
         borderColor: palette.primary,
@@ -83,6 +84,7 @@ export default {
       filled: {
         color: palette.white,
       },
+      gradient: {},
       outline: {
         color: palette.primary,
       },

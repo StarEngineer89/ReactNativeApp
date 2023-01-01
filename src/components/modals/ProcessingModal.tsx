@@ -9,9 +9,13 @@ import { Text } from 'react-native';
 const SPIN_SIZE = isTablet() ? 'large' : 'small';
 const FONT_SIZE = isTablet() ? 14 : 10;
 
-const ProcessingModal = ({ processingText = 'PLEASE WAIT' }) => {
+interface Props {
+  processingText?: string;
+}
+
+const ProcessingModal = ({ processingText = 'PLEASE WAIT' }: Props) => {
   return (
-    <ModalContainer visible={true}>
+    <ModalContainer visible={true} onPressAction={() => {}}>
       <VStack spacing={10}>
         <ActivityIndicator animating={true} size={SPIN_SIZE} color={palette.primary} />
         <Text
@@ -20,8 +24,7 @@ const ProcessingModal = ({ processingText = 'PLEASE WAIT' }) => {
             fontFamily: fonts.bold,
             textAlign: 'center',
             color: palette.primary,
-          }}
-        >
+          }}>
           {processingText}
         </Text>
       </VStack>

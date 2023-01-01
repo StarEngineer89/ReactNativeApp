@@ -16,11 +16,7 @@ const SocialButton = ({ type = 'google', ...props }: SocialButtonProps) => {
 
   return (
     <TouchableOpacity {...props}>
-      {type === 'google' ? (
-        <GoogleButton width={width} height={height} />
-      ) : (
-        <FacebookButton width={width} height={height} />
-      )}
+      {type === 'google' ? <GoogleButton width={width} height={height} /> : <FacebookButton width={width} height={height} />}
     </TouchableOpacity>
   );
 };
@@ -49,7 +45,7 @@ const AuthSocial = ({
       <HStack spacing={10}>
         <Spacer />
         <SocialButton onPress={onPressGoogle} />
-        <SocialButton type='facebook' onPress={onPressFacebook} />
+        <SocialButton type="facebook" onPress={onPressFacebook} />
         <Spacer />
       </HStack>
     </VStack>

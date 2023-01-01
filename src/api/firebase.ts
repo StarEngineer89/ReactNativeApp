@@ -1,23 +1,10 @@
-import uuid from "react-native-uuid";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytes,
-  FirebaseStorage,
-} from "firebase/storage"; //access the storage
-import { initializeApp, FirebaseApp, getApps, getApp } from "firebase/app"; //validate yourselfdatabase
-import { firebaseConfig } from "src/config";
-import {
-  Auth,
-  getAuth,
-  signInAnonymously,
-  onAuthStateChanged,
-  signOut,
-  initializeAuth,
-} from "firebase/auth";
-import { getReactNativePersistence } from "firebase/auth/react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid';
+import { getDownloadURL, getStorage, ref, uploadBytes, FirebaseStorage } from 'firebase/storage'; //access the storage
+import { initializeApp, FirebaseApp, getApps, getApp } from 'firebase/app'; //validate yourselfdatabase
+import { firebaseConfig } from 'src/config';
+import { Auth, getAuth, signInAnonymously, onAuthStateChanged, signOut, initializeAuth } from 'firebase/auth';
+import { getReactNativePersistence } from 'firebase/auth/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let fb: FirebaseApp;
 let auth: Auth;
@@ -34,11 +21,11 @@ if (getApps().length < 1) {
   storage = getStorage(fb);
 }
 
-export const uploadToDirectory = async (directory, uri) => {
+export const uploadToDirectory = async (directory: string, uri: string) => {
   try {
     const fileExtension = uri
-      .substring(uri.lastIndexOf("/") + 1)
-      .split(".")
+      .substring(uri.lastIndexOf('/') + 1)
+      .split('.')
       .pop();
     const filename = uuid.v4();
 
@@ -56,16 +43,16 @@ export const uploadToDirectory = async (directory, uri) => {
     // Return the URL
     return url;
   } catch (error) {
-    console.log("could not upload", error);
+    console.log('could not upload', error);
   }
 };
 
 export const checkFirebaseAuth = async (cb: Function) => {
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, user => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
+      // const uid = user.uid;
       cb(true);
 
       // ...
@@ -85,11 +72,11 @@ export const anonymousLogin = async () => {
   signInAnonymously(auth)
     .then(() => {
       // Signed in..
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, user => {
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
-          const uid = user.uid;
+          // const uid = user.uid;
           // ...
         } else {
           // User is signed out
@@ -97,9 +84,9 @@ export const anonymousLogin = async () => {
         }
       });
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+    .catch(() => {
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
       // ...
     });
 };

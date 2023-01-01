@@ -11,7 +11,7 @@ const LabelTextInput = ({ label, ...props }: LabelTextInputProps) => {
   const textStyle = [StyleGuide.typography.inputLabel];
   const inputContainerStyle = [StyleGuide.sizes.inputLabel, props.style] as TextStyle[];
   return (
-    <VStack alignment='leading'>
+    <VStack alignment="leading">
       <Text style={textStyle}>{label}</Text>
 
       <TextInput

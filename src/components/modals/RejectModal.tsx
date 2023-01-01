@@ -7,9 +7,14 @@ import ModalContainer from './ModalContainer';
 
 const FONT_SIZE = isTablet() ? 14 : 10;
 
-const RejectModal = ({ clearAction, rejectText }) => {
+interface Props {
+  clearAction: () => void;
+  rejectText: string;
+}
+
+const RejectModal = ({ clearAction, rejectText }: Props) => {
   return (
-    <ModalContainer visible={true} hasAction actionTitle='TRY AGAIN' onPressAction={clearAction}>
+    <ModalContainer visible={true} hasAction actionTitle="TRY AGAIN" onPressAction={clearAction}>
       <VStack spacing={20}>
         <Text style={{ fontSize: FONT_SIZE, fontFamily: fonts.bold }}>{rejectText}</Text>
       </VStack>

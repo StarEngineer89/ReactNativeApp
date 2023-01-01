@@ -1,14 +1,14 @@
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import Animated, { Layout, ZoomInRotate } from "react-native-reanimated";
-import { HStack, Spacer, VStack } from "react-native-stacks";
-import { StyleGuide } from "src/config";
-import { Tutorials } from "src/constants";
-import { Image, HList } from "components/base";
-import { TutorialBox } from "components/custom";
-import { ListProps } from "./_types";
+import React from 'react';
+import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import Animated, { Layout, ZoomInRotate } from 'react-native-reanimated';
+import { HStack, Spacer, VStack } from 'react-native-stacks';
+import { StyleGuide } from 'src/config';
+import { Tutorials } from 'src/constants';
+import { Image, HList } from 'components/base';
+import { TutorialBox } from 'components/custom';
+import { ITeacherCategory } from 'src/entities';
 
-const arrayToarrays = (array) => {
+const arrayToarrays = <T,>(array: T[]) => {
   let output = [];
   for (let index = 0; index < array.length; index = index + 2) {
     let _internal = [];
@@ -20,23 +20,24 @@ const arrayToarrays = (array) => {
   return output;
 };
 
-const SetsList = (props: ListProps) => {
+interface Props {
+  showList: boolean;
+  showEdit: boolean;
+  onEdit: (e: GestureResponderEvent) => void;
+  onPressItem: (item: ITeacherCategory) => void;
+  data: ITeacherCategory[];
+  onConfirmTutorial: (e: GestureResponderEvent) => void;
+}
+
+const SetsList = (props: Props) => {
   return (
-    <VStack
-      alignment="leading"
-      style={{ marginBottom: StyleGuide.sizes.padding }}
-    >
-      <HStack
-        alignment="leading"
-        style={{ paddingHorizontal: StyleGuide.sizes.padding }}
-      >
+    <VStack alignment="leading" style={{ marginBottom: StyleGuide.sizes.padding }}>
+      <HStack alignment="leading" style={{ paddingHorizontal: StyleGuide.sizes.padding }}>
         <Text style={[StyleGuide.typography.dashboardHeader]}>Manage Sets</Text>
         <Spacer />
         {props.showEdit && (
           <TouchableOpacity onPress={props.onEdit}>
-            <Text style={[StyleGuide.typography.dashboardHeaderEdit]}>
-              Edit
-            </Text>
+            <Text style={[StyleGuide.typography.dashboardHeaderEdit]}>Edit</Text>
           </TouchableOpacity>
         )}
       </HStack>
@@ -45,13 +46,11 @@ const SetsList = (props: ListProps) => {
         <HList
           data={arrayToarrays(props.data)}
           style={{
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
             paddingLeft: StyleGuide.sizes.padding - 5,
           }}
-          snapToInterval={
-            3 * (StyleGuide.sizes.thumb.md.width + 2 * StyleGuide.main.spacing)
-          }
-          renderItem={({ item, index }) => (
+          snapToInterval={3 * (StyleGuide.sizes.thumb.md.width + 2 * StyleGuide.main.spacing)}
+          renderItem={({ item }) => (
             <VStack spacing={5}>
               {item.map(({ index }) => {
                 let _item = props.data[index];
@@ -62,8 +61,7 @@ const SetsList = (props: ListProps) => {
                     layout={Layout.springify()}
                     style={{
                       marginHorizontal: StyleGuide.main.spacing,
-                    }}
-                  >
+                    }}>
                     <TouchableOpacity onPress={() => props.onPressItem(_item)}>
                       <Image uri={_item.image} defaultSource={_item.slug} />
                     </TouchableOpacity>

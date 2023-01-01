@@ -1,34 +1,33 @@
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import Animated, {
-  Layout,
-  ZoomIn,
-  ZoomInRotate,
-  ZoomOut,
-} from "react-native-reanimated";
-import { HStack, Spacer, VStack } from "react-native-stacks";
-import { StyleGuide } from "src/config";
-import { Tutorials } from "src/constants";
-import { Image, HList } from "components/base";
-import { AddButton, TutorialBox } from "components/custom";
-import { ListProps } from "./_types";
+import React from 'react';
+import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import Animated, { Layout, ZoomIn, ZoomInRotate, ZoomOut } from 'react-native-reanimated';
+import { HStack, Spacer, VStack } from 'react-native-stacks';
+import { StyleGuide } from 'src/config';
+import { Tutorials } from 'src/constants';
+import { Image, HList } from 'components/base';
+import { AddButton, TutorialBox } from 'components/custom';
+import { ITeacherCategory } from 'src/entities';
 
-const StudentsList = (props: ListProps) => {
+interface Props {
+  showList: boolean;
+  showEdit: boolean;
+  onEdit: (e: GestureResponderEvent) => void;
+  data: ITeacherCategory[];
+  showAdd: boolean;
+  onAdd: (e: GestureResponderEvent) => void;
+  onPressItem: (item: ITeacherCategory) => void;
+  onConfirmTutorial: (e: GestureResponderEvent) => void;
+}
+
+const StudentsList = (props: Props) => {
   return (
     <VStack alignment="leading">
-      <HStack
-        alignment="leading"
-        style={{ paddingHorizontal: StyleGuide.sizes.padding }}
-      >
-        <Text style={[StyleGuide.typography.dashboardHeader]}>
-          Manage Students
-        </Text>
+      <HStack alignment="leading" style={{ paddingHorizontal: StyleGuide.sizes.padding }}>
+        <Text style={[StyleGuide.typography.dashboardHeader]}>Manage Students</Text>
         <Spacer />
         {props.showEdit && (
           <TouchableOpacity onPress={props.onEdit}>
-            <Text style={[StyleGuide.typography.dashboardHeaderEdit]}>
-              Edit
-            </Text>
+            <Text style={[StyleGuide.typography.dashboardHeaderEdit]}>Edit</Text>
           </TouchableOpacity>
         )}
       </HStack>
@@ -36,43 +35,26 @@ const StudentsList = (props: ListProps) => {
       {props.showList ? (
         <HList
           data={props.data}
-          style={{ backgroundColor: "transparent" }}
-          snapToInterval={
-            3 * (StyleGuide.sizes.thumb.md.width + 2 * StyleGuide.main.spacing)
-          }
+          style={{ backgroundColor: 'transparent' }}
+          snapToInterval={3 * (StyleGuide.sizes.thumb.md.width + 2 * StyleGuide.main.spacing)}
           ListHeaderComponent={
-            <Animated.View
-              entering={ZoomIn}
-              exiting={ZoomOut}
-              layout={Layout.delay(200)}
-            >
-              <AddButton
-                size="md"
-                onPress={props.onAdd}
-                style={{ marginRight: StyleGuide.main.spacing }}
-              />
+            <Animated.View entering={ZoomIn} exiting={ZoomOut} layout={Layout.delay(200)}>
+              <AddButton size="md" onPress={props.onAdd} style={{ marginRight: StyleGuide.main.spacing }} />
             </Animated.View>
           }
           renderItem={({ item, index }) => (
             <Animated.View
               entering={ZoomInRotate.springify().delay(index * 50)}
               layout={Layout.springify()}
-              style={{ marginHorizontal: StyleGuide.main.spacing }}
-            >
+              style={{ marginHorizontal: StyleGuide.main.spacing }}>
               <TouchableOpacity onPress={() => props.onPressItem(item)}>
-                <Image
-                  uri={item.image}
-                  uploading={item.uploading ? item.uploading : undefined}
-                />
+                <Image uri={item.image} uploading={item.uploading ? item.uploading : undefined} />
               </TouchableOpacity>
             </Animated.View>
           )}
         />
       ) : (
-        <TutorialBox
-          data={Tutorials.students}
-          onPress={props.onConfirmTutorial}
-        />
+        <TutorialBox data={Tutorials.students} onPress={props.onConfirmTutorial} />
       )}
     </VStack>
   );

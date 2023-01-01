@@ -1,7 +1,8 @@
-import actions from "./_actionNames";
-import { authInitialState } from "./_initialState";
+import actions from './_actionNames';
+import { authInitialState } from './_initialState';
+import { IAuthReducerActions, IAuthState } from './_types';
 
-export const authReducer = (state, { type, payload }) => {
+export const authReducer = (state: IAuthState, { type, payload }: IAuthReducerActions) => {
   switch (type) {
     case actions.LOADING_STARTED:
       return { ...state, loading: true };
@@ -10,7 +11,7 @@ export const authReducer = (state, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        error: payload || "Something Went Wrong!",
+        error: payload.error || 'Something Went Wrong!',
       };
 
     case actions.CLEAR_ERROR:
@@ -77,7 +78,7 @@ export const authReducer = (state, { type, payload }) => {
         profiles: {
           ...state.profiles,
           loading: false,
-          error: "Something Went Wrong!",
+          error: 'Something Went Wrong!',
         },
       };
 
@@ -88,7 +89,7 @@ export const authReducer = (state, { type, payload }) => {
         authType: null,
       };
 
-    case "UPDATE_ATTEMPTS":
+    case actions.UPDATE_ATTEMPTS:
       return {
         ...state,
         loginAttempts: payload,

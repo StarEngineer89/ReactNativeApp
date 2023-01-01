@@ -48,7 +48,7 @@ const OnBoardingScreen = () => {
   const scrollRef = useAnimatedRef<ScrollView>();
 
   const onScrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
+    onScroll: event => {
       translateX.value = event.contentOffset.x;
     },
   });
@@ -71,8 +71,7 @@ const OnBoardingScreen = () => {
         showsHorizontalScrollIndicator={false}
         onScroll={onScrollHandler}
         scrollEventThrottle={16}
-        onMomentumScrollEnd={() => setshow(activeIndex.value === 2)}
-      >
+        onMomentumScrollEnd={() => setshow(activeIndex.value === 2)}>
         {onBoardings.map((item, index) => {
           const rImage = useAnimatedStyle(() => {
             const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
@@ -89,12 +88,7 @@ const OnBoardingScreen = () => {
 
           const rHeading = useAnimatedStyle(() => {
             const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
-            const translateXHeading = interpolate(
-              translateX.value,
-              inputRange,
-              [width * 0.2, 1, -(width * 0.2)],
-              Extrapolate.CLAMP
-            );
+            const translateXHeading = interpolate(translateX.value, inputRange, [width * 0.2, 1, -(width * 0.2)], Extrapolate.CLAMP);
 
             const opacity = interpolate(translateX.value, inputRange, [0, 1, 0], Extrapolate.CLAMP);
             return {
@@ -104,12 +98,7 @@ const OnBoardingScreen = () => {
           });
           const rBody = useAnimatedStyle(() => {
             const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
-            const translateXHeading = interpolate(
-              translateX.value,
-              inputRange,
-              [width * 0.7, 1, -(width * 0.7)],
-              Extrapolate.CLAMP
-            );
+            const translateXHeading = interpolate(translateX.value, inputRange, [width * 0.7, 1, -(width * 0.7)], Extrapolate.CLAMP);
             const opacity = interpolate(translateX.value, inputRange, [0, 1, 0], Extrapolate.CLAMP);
             return {
               opacity,
@@ -117,10 +106,7 @@ const OnBoardingScreen = () => {
             };
           });
           return (
-            <View
-              key={`on-boarding-${index.toString()}`}
-              style={[{ flex: 1, width, height, backgroundColor: item.bg }]}
-            >
+            <View key={`on-boarding-${index.toString()}`} style={[{ flex: 1, width, height }]}>
               <VStack style={{ paddingTop: 100 }} spacing={5}>
                 <Animated.Image
                   source={item.img}
@@ -131,7 +117,7 @@ const OnBoardingScreen = () => {
                     },
                     rImage,
                   ]}
-                  resizeMode='contain'
+                  resizeMode="contain"
                 />
 
                 <Animated.View style={rHeading}>
@@ -151,7 +137,7 @@ const OnBoardingScreen = () => {
         ))}
       </HStack>
       <View style={{ position: 'absolute', bottom: 50, alignSelf: 'center' }}>
-        {show && <Button variant='gradient' size='lg' title={'Get Started'} onPress={completeOnBoarding} />}
+        {show && <Button variant="gradient" size="lg" title={'Get Started'} onPress={completeOnBoarding} />}
       </View>
     </ContainerView>
   );

@@ -7,7 +7,13 @@ import ConfirmModal from './ConfirmModal';
 
 const FONT_SIZE = isTablet() ? 16 : 12;
 
-const DeletingModal = ({ show, onDelete, onCancel }) => {
+interface Props {
+  show: boolean;
+  onDelete: () => void;
+  onCancel: () => void;
+}
+
+const DeletingModal = ({ show, onDelete, onCancel }: Props) => {
   return (
     <ConfirmModal visible={show} onConfirm={onDelete} onCancel={onCancel}>
       <VStack spacing={20}>
@@ -18,8 +24,7 @@ const DeletingModal = ({ show, onDelete, onCancel }) => {
             marginHorizontal: 5,
             textAlign: 'center',
             color: palette.danger,
-          }}
-        >
+          }}>
           Are you sure? This action cannot be undone.
         </Text>
       </VStack>

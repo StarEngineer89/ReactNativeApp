@@ -1,4 +1,4 @@
-import { isTablet } from "src/functions";
+import { isTablet } from 'src/functions';
 
 export default {
   md: {

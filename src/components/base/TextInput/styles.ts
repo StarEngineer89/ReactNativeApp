@@ -1,4 +1,3 @@
-import { StyleProp, TextStyle } from 'react-native';
 import { fonts, palette } from 'src/config';
 import { isTablet as _isTablet } from 'src/functions';
 

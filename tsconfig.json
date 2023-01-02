@@ -2,9 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "components/*": ["./src/components/*"],
+      "components/*": ["./src/components/*"]
       // "constants/*": ["./constants/*"]
     },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true
   },
   "extends": "expo/tsconfig.base",
   "typeRoots": ["./types"]

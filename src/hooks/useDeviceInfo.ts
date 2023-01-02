@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, ScaledSize } from 'react-native';
 import { isTablet } from 'src/functions';
 
 const useDeviceInfo = () => {
   const [screenData, setScreenData] = useState(Dimensions.get('window'));
 
   useEffect(() => {
-    const onChange = (result) => {
+    const onChange = (result: {
+      window: ScaledSize;
+      screen: ScaledSize;
+    }) => {
       setScreenData(result.screen);
     };
 

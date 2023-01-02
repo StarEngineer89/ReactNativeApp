@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
-import { openImagePicker } from "src/helpers/uploadHelper";
-import { useActionSheet } from "@expo/react-native-action-sheet";
-import { Alert } from "react-native";
-import { Camera } from "expo-camera";
-import { navigate, navigationRef } from "src/refs";
-import { palette, StyleGuide } from "src/config";
+import React, { useEffect } from 'react';
+import { openImagePicker } from 'src/helpers/uploadHelper';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { Alert } from 'react-native';
+import { Camera } from 'expo-camera';
+import { navigate, navigationRef } from 'src/refs';
+import { palette, StyleGuide } from 'src/config';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { MaterialIcons } from "@expo/vector-icons";
+interface Props {
+  onSelectImage: (image: string) => void;
+}
 
-const CustomSetImageUploader = ({ source = null, onSelectImage }) => {
+const CustomSetImageUploader = ({ onSelectImage }: Props) => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const _showImagePicker = async () => {
@@ -18,16 +21,17 @@ const CustomSetImageUploader = ({ source = null, onSelectImage }) => {
 
   useEffect(() => {
     const route = navigationRef.current.getCurrentRoute();
+    const image = (route.params as any)?.image;
 
-    if (route.params?.image) {
-      onSelectImage(route.params?.image);
+    if (image) {
+      onSelectImage(image);
     }
 
     return () => {};
   }, [navigationRef.current.getCurrentRoute()]);
 
   const _prompt = () => {
-    const options = ["Choose from library", "Take a Photo", "Cancel"];
+    const options = ['Choose from library', 'Take a Photo', 'Cancel'];
 
     const cancelButtonIndex = 2;
 
@@ -36,15 +40,15 @@ const CustomSetImageUploader = ({ source = null, onSelectImage }) => {
         options,
         cancelButtonIndex,
       },
-      (buttonIndex) => {
+      buttonIndex => {
         if (buttonIndex === 0) {
           _showImagePicker();
         } else if (buttonIndex === 1) {
           Camera.requestCameraPermissionsAsync()
             .then(({ status }) => {
-              if (status === "granted") {
+              if (status === 'granted') {
                 // navigationRef.current.navigate()
-                navigate("Camera", {
+                navigate('Camera', {
                   backRoute: navigationRef.current.getCurrentRoute(),
                 });
               } else {
@@ -52,23 +56,16 @@ const CustomSetImageUploader = ({ source = null, onSelectImage }) => {
               }
               //  Alert.alert(`Camera Status is ${status}`)
             })
-            .catch((e) => {
+            .catch(() => {
               // handle Error
             });
         }
         // Do something here depending on the button index selected
-      }
+      },
     );
   };
 
-  return (
-    <MaterialIcons
-      name="add-box"
-      size={StyleGuide.sizes.navButton}
-      color={palette.primary}
-      onPress={_prompt}
-    />
-  );
+  return <MaterialIcons name="add-box" size={StyleGuide.sizes.navButton} color={palette.primary} onPress={_prompt} />;
 };
 
 export default CustomSetImageUploader;

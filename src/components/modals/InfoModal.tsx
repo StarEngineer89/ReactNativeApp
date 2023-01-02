@@ -7,9 +7,14 @@ import { fonts, palette } from 'src/config';
 
 const FONT_SIZE = isTablet() ? 14 : 10;
 
-const InfoModal = ({ clearAction, body }) => {
+interface Props {
+  clearAction: () => void;
+  body: string;
+}
+
+const InfoModal = ({ clearAction, body }: Props) => {
   return (
-    <ModalContainer visible={true} hasAction actionTitle='GO BACK' onPressAction={clearAction}>
+    <ModalContainer visible={true} hasAction actionTitle="GO BACK" onPressAction={clearAction}>
       <VStack spacing={10}>
         <Text
           style={{
@@ -18,8 +23,7 @@ const InfoModal = ({ clearAction, body }) => {
             marginHorizontal: 5,
             textAlign: 'center',
             color: palette.primary,
-          }}
-        >
+          }}>
           {body}
         </Text>
       </VStack>

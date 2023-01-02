@@ -1,14 +1,4 @@
-import {
-  View,
-  ImageURISource,
-  ImageSourcePropType,
-  StyleProp,
-  ViewStyle,
-  ImageStyle,
-  Image as RNImage,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import { ImageURISource, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle, Image as RNImage, StyleSheet } from 'react-native';
 import React from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import preloaded from 'src/constants/preloaded';
@@ -22,7 +12,7 @@ import { isTablet } from 'src/functions';
 let styles = StyleGuide.sizes.thumb;
 interface IIProps {
   size?: 'xxl' | 'xl' | 'lg' | 'md' | 'sm';
-  defaultSource?: ImageURISource | number;
+  defaultSource?: ImageURISource | number | string;
   preview?: ImageSourcePropType;
   uri: string;
   imgStyle?: StyleProp<ImageStyle>;
@@ -61,42 +51,25 @@ const Image = ({ size = 'md', uploading = false, ...props }: IIProps) => {
         onLoad={() => {
           isLoaded.value = 1;
         }}
-        style={[
-          StyleSheet.absoluteFillObject,
-          styles[size],
-          aImageStyle,
-          { backgroundColor: '#8b6ff7' },
-          props.imgStyle,
-        ]}
+        style={[StyleSheet.absoluteFillObject, styles[size], aImageStyle, { backgroundColor: '#8b6ff7' }, props.imgStyle]}
       />
 
       <AnimatedBlurView
         intensity={90}
-        style={[
-          StyleSheet.absoluteFillObject,
-          styles[size],
-          { backgroundColor: palette.primary },
-          aBlurStyle,
-          props.imgStyle,
-        ]}
+        style={[StyleSheet.absoluteFillObject, styles[size], { backgroundColor: palette.primary }, aBlurStyle, props.imgStyle]}
       />
 
       {props.defaultSource && (
         <RNImage
           style={[StyleSheet.absoluteFillObject, styles[size], { opacity: 0.5 }, props.imgStyle]}
-          source={preloaded[props.defaultSource]}
+          source={preloaded[props.defaultSource as number] as ImageSourcePropType}
         />
       )}
 
       {uploading && uploading === true && (
         <BlurView
           intensity={50}
-          style={[
-            StyleSheet.absoluteFillObject,
-            styles[size],
-            { backgroundColor: palette.primary, justifyContent: 'center', alignItems: 'center' },
-          ]}
-        >
+          style={[StyleSheet.absoluteFillObject, styles[size], { backgroundColor: palette.primary, justifyContent: 'center', alignItems: 'center' }]}>
           <ActivityIndicator size={'small'} color={palette.link_water} />
         </BlurView>
       )}
@@ -116,16 +89,8 @@ const Image = ({ size = 'md', uploading = false, ...props }: IIProps) => {
                 alignItems: 'center',
               },
               aOverlayStyle,
-            ]}
-          >
-            <TextTicker
-              style={StyleGuide.typography.thumbHeader}
-              duration={3000}
-              loop
-              bounce
-              repeatSpacer={50}
-              marqueeDelay={5000}
-            >
+            ]}>
+            <TextTicker style={StyleGuide.typography.thumbHeader} duration={3000} loop bounce repeatSpacer={50} marqueeDelay={5000}>
               {props.header}
             </TextTicker>
           </Animated.View>

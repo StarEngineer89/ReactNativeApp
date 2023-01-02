@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { View, StyleSheet, Modal, Animated } from 'react-native';
 import { palette } from 'src/config';
 import { VStack } from 'react-native-stacks';
@@ -9,7 +9,14 @@ const SPACING = isTablet() ? 15 : 10;
 const MODAL_WIDTH = isTablet() ? 238 : 175;
 const MODAL_HEIGHT = isTablet() ? 170 : 120;
 
-const ModalContainer = ({ visible, hasAction = false, actionTitle = '', onPressAction = () => {}, children }) => {
+interface Props {
+  visible: boolean;
+  hasAction?: boolean;
+  actionTitle?: string;
+  onPressAction: () => void;
+}
+
+const ModalContainer = ({ visible, hasAction = false, actionTitle = '', onPressAction = () => {}, children }: PropsWithChildren<Props>) => {
   const [showModal, setShowModal] = React.useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
 
@@ -40,9 +47,7 @@ const ModalContainer = ({ visible, hasAction = false, actionTitle = '', onPressA
         <Animated.View style={[styles.modalContainer, { transform: [{ scale: scaleValue }] }]}>
           <VStack spacing={SPACING}>
             <View style={styles.modalChildrenContainer}>{children}</View>
-            <View style={{ height: 30 }}>
-              {hasAction && <Button variant='gradient' size='lg' title={actionTitle} onPress={onPressAction} />}
-            </View>
+            <View style={{ height: 30 }}>{hasAction && <Button variant="gradient" size="lg" title={actionTitle} onPress={onPressAction} />}</View>
           </VStack>
         </Animated.View>
       </View>

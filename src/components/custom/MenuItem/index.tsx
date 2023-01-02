@@ -11,23 +11,28 @@ interface IDotProps extends SvgProps {
   fillColor: string;
 }
 
-const IndicatorDot = ({ fillColor, ...props }) => (
-  <Svg width='12' height='12' viewBox={`0 0 12 12`} {...props}>
-    <GradientSVG id='a' />
+const IndicatorDot = ({ fillColor, ...props }: IDotProps) => (
+  <Svg width="12" height="12" viewBox={`0 0 12 12`} {...props}>
+    <GradientSVG id="a" />
     <Circle cx={6} cy={6} r={6} fill={fillColor} />
   </Svg>
 );
 
-const MenuItem = ({ active = false, onPress, title, showIndicator = false }) => {
+interface IMenuItemProps {
+  active?: boolean;
+  onPress: () => void;
+  title: string;
+  showIndicator?: boolean;
+}
+
+const MenuItem = ({ active = false, onPress, title, showIndicator = false }: IMenuItemProps) => {
   return (
     <Pressable onPress={onPress} style={{ width: '100%', padding: 15 }}>
       <HStack>
         <Text style={StyleGuide.typography.menuItem}>{title}</Text>
         <Spacer />
 
-        {showIndicator && showIndicator === true && (
-          <IndicatorDot width={size} height={size} fillColor={active ? 'url(#a)' : palette.link_water} />
-        )}
+        {showIndicator && showIndicator === true && <IndicatorDot width={size} height={size} fillColor={active ? 'url(#a)' : palette.link_water} />}
       </HStack>
     </Pressable>
   );

@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  FlatListProps,
-  ActivityIndicator,
-} from "react-native";
-import { palette } from "src/config";
-import { useDeviceInfo } from "src/hooks";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, FlatList, FlatListProps, ActivityIndicator } from 'react-native';
+import { palette } from 'src/config';
+import { useDeviceInfo } from 'src/hooks';
 
-const formatData = (data, numColumns) => {
+const formatData = (data: unknown[], numColumns: number) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-  while (
-    numberOfElementsLastRow !== numColumns &&
-    numberOfElementsLastRow !== 0
-  ) {
+  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
     data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
     numberOfElementsLastRow++;
   }
@@ -24,7 +15,7 @@ const formatData = (data, numColumns) => {
   return data;
 };
 
-interface GridListProps extends Omit<FlatListProps<any>, "renderItem"> {
+interface GridListProps extends Omit<FlatListProps<any>, 'renderItem'> {
   numOfColumns?: { tablet?: number; landscape?: number; mobile?: number };
   renderDetails: React.FC<{ item: any; index: number }>;
   paginated?: Boolean;
@@ -46,7 +37,7 @@ const GridList = ({
     setItems(paginated ? props.data.slice(0, page * itemsPerPage) : props.data);
 
     setLoading(false);
-    return () => {};
+    return () => { };
   }, [page, props.data]);
 
   let paddingHorizontal = 30;
@@ -68,12 +59,10 @@ const GridList = ({
       }}
       onEndReachedThreshold={0}
       ListFooterComponentStyle={{
-        justifyContent: "center",
-        alignSelf: "center",
+        justifyContent: 'center',
+        alignSelf: 'center',
       }}
-      ListFooterComponent={
-        loading && <ActivityIndicator size="small" color={palette.primary} />
-      }
+      ListFooterComponent={loading && <ActivityIndicator size="small" color={palette.primary} />}
       {...props}
       data={formatData(items, numColumns)}
       numColumns={numColumns}
@@ -85,17 +74,10 @@ const GridList = ({
           return <View style={[{ margin: spacing }, styles.itemInvisible]} />;
         }
 
-        return (
-          <View style={[{ margin: spacing }]}>
-            {props.renderDetails({ item, index })}
-          </View>
-        );
+        return <View style={[{ margin: spacing }]}>{props.renderDetails({ item, index })}</View>;
       }}
       style={[styles.container, { paddingHorizontal }, props.style]}
-      contentContainerStyle={[
-        styles.contentContainer,
-        props.contentContainerStyle,
-      ]}
+      contentContainerStyle={[styles.contentContainer, props.contentContainerStyle]}
     />
   );
 };
@@ -104,15 +86,15 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 0,
     marginVertical: 20,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   contentContainer: {
-    justifyContent: "center",
-    alignItems: "flex-start",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    alignSelf: 'center',
   },
   itemInvisible: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
 });
 

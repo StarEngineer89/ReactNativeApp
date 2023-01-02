@@ -1,5 +1,3 @@
-import { StyleProp, ViewStyle } from 'react-native';
-import { fonts, palette } from 'src/config';
 import { isTablet as _isTablet } from 'src/functions';
 
 const isTablet = _isTablet();

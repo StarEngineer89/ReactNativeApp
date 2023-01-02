@@ -1,4 +1,6 @@
-export const authInitialState = {
+import { IAuthState } from './_types';
+
+export const authInitialState: IAuthState = {
   authId: null,
   authType: null,
   accountType: null,

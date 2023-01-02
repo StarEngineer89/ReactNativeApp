@@ -10,9 +10,15 @@ export const isTablet = () => {
   } else return pixelDensity === 2 && (adjustedWidth >= 1920 || adjustedHeight >= 1920);
 };
 
-import { Audio } from 'expo-av';
+export const isPad = () => {
+  return Platform.OS === 'ios' && Platform.isPad;
+};
 
-export async function playSound(sound) {
+import { Audio } from 'expo-av';
+import { Platform } from 'react-native';
+import { AVPlaybackSource } from 'expo-av/build/AV.types';
+
+export async function playSound(sound: AVPlaybackSource) {
   await Audio.setAudioModeAsync({
     allowsRecordingIOS: false,
     playsInSilentModeIOS: true,
@@ -23,12 +29,12 @@ export async function playSound(sound) {
   });
 
   Audio.Sound.createAsync(sound, { shouldPlay: true })
-    .then((res) => {
-      res.sound.setOnPlaybackStatusUpdate((status) => {
-        if (!status.didJustFinish) return;
+    .then(res => {
+      res.sound.setOnPlaybackStatusUpdate(status => {
+        if (status.isLoaded && !status.didJustFinish) return;
 
-        res.sound.unloadAsync().catch((error) => console.log('unloading error', error));
+        res.sound.unloadAsync().catch(error => console.log('unloading error', error));
       });
     })
-    .catch((error) => console.log('create async error', error));
+    .catch(error => console.log('create async error', error));
 }

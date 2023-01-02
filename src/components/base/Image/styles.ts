@@ -1,8 +1,8 @@
 import { palette } from 'src/config';
 import { isTablet } from 'src/functions';
 
-// const OVERLAY_HEADER = Platform.isPad ? 18 : 11;
-// const OVERLAY_SUB_HEADER = Platform.isPad ? 14 : 8;
+// const OVERLAY_HEADER = Platform.OS === 'ios' && Platform.isPad ? 18 : 11;
+// const OVERLAY_SUB_HEADER = Platform.OS === 'ios' && Platform.isPad ? 14 : 8;
 export default {
   xxl: {
     height: isTablet() ? 240 : 200,

@@ -10,9 +10,14 @@ const ICON_WIDTH = isTablet() ? 120 : 90;
 const ICON_HEIGHT = isTablet() ? 75 : 55;
 const FONT_SIZE = isTablet() ? 14 : 10;
 
-const ErrorModal = ({ clearAction, errorText }) => {
+interface Props {
+  clearAction: () => void;
+  errorText?: string;
+}
+
+const ErrorModal = ({ clearAction, errorText }: Props) => {
   return (
-    <ModalContainer visible={true} hasAction actionTitle='TRY AGAIN' onPressAction={clearAction}>
+    <ModalContainer visible={true} hasAction actionTitle="TRY AGAIN" onPressAction={clearAction}>
       <VStack spacing={10}>
         <ErrorIcon width={ICON_WIDTH} height={ICON_HEIGHT} />
         <Text
@@ -22,8 +27,7 @@ const ErrorModal = ({ clearAction, errorText }) => {
             marginHorizontal: 5,
             textAlign: 'center',
             color: palette.primary,
-          }}
-        >
+          }}>
           {errorText || 'SOMETHING WENT WRONG!'}
         </Text>
       </VStack>

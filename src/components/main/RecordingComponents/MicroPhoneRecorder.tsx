@@ -13,8 +13,14 @@ const SIZE_INNER = isTablet() ? 90 : 60;
 const MICRO_W = isTablet() ? 22 : 15;
 const MICRO_H = isTablet() ? 37 : 25;
 
-const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }) => {
-  const [recording, setRecording] = useState(null);
+interface Props {
+  onStart: () => void;
+  onEnd: () => void;
+  onFinished: (uri: string) => void;
+}
+
+const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const { width, height, isTablet, isLandscape } = useDeviceInfo();
 
   const _startRecording = async () => {
@@ -73,18 +79,17 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }) => {
       style={{ position: 'absolute', bottom, left }}
       onLongPress={_checkPermissionAndRecord}
       onPressOut={_stopRecording}
-      activeOpacity={0.5}
-    >
+      activeOpacity={0.5}>
       <View style={[styles.baseCircle, styles.outerCircle]}>
         <View style={[styles.baseCircle, styles.innerCircle]}>
-          <Svg width={MICRO_W} height={MICRO_H} viewBox='0 0 15.104 25'>
-            <G transform='translate(-120.448 -543.457)'>
+          <Svg width={MICRO_W} height={MICRO_H} viewBox="0 0 15.104 25">
+            <G transform="translate(-120.448 -543.457)">
               <Path
-                d='M135.552,556.369a.834.834,0,1,0-1.666,0,5.9,5.9,0,1,1-11.772,0,.834.834,0,1,0-1.666,0,7.848,7.848,0,0,0,6.719,7.97v2.353h-3.026a.884.884,0,0,0,0,1.765h7.718a.884.884,0,0,0,0-1.765h-3.026v-2.353A7.848,7.848,0,0,0,135.552,556.369Z'
+                d="M135.552,556.369a.834.834,0,1,0-1.666,0,5.9,5.9,0,1,1-11.772,0,.834.834,0,1,0-1.666,0,7.848,7.848,0,0,0,6.719,7.97v2.353h-3.026a.884.884,0,0,0,0,1.765h7.718a.884.884,0,0,0,0-1.765h-3.026v-2.353A7.848,7.848,0,0,0,135.552,556.369Z"
                 fill={palette.link_water}
               />
               <Path
-                d='M128,561.281a4.789,4.789,0,0,0,4.637-4.912v-8a4.645,4.645,0,1,0-9.274,0v7.97A4.816,4.816,0,0,0,128,561.281Z'
+                d="M128,561.281a4.789,4.789,0,0,0,4.637-4.912v-8a4.645,4.645,0,1,0-9.274,0v7.97A4.816,4.816,0,0,0,128,561.281Z"
                 fill={palette.link_water}
               />
             </G>

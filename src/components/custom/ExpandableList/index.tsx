@@ -28,9 +28,8 @@ const ExpandableList = ({ title, children }: ListProps) => {
     <>
       <TouchableWithoutFeedback
         onPress={() => {
-          setOpen((o) => !o);
-        }}
-      >
+          setOpen(o => !o);
+        }}>
         <Animated.View style={[styles.container]} layout={Layout}>
           <HStack style={{ width: '100%' }}>
             <Text style={StyleGuide.typography.menuItem}>{title}</Text>

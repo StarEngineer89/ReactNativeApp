@@ -19,12 +19,6 @@ import {
 import { getReactNativePersistence } from "firebase/auth/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-/**
- * NOTE>>>>>>>>>>>>>>>>>>>>>>>>>> The package "firebase" was already added to the app and was coupled
- * but since it didn't have crashlytics support, I had to add the "react-native-firebase" package as well
- * might need to remove "firebase" package itself in the future
- */
-
 let fb: FirebaseApp;
 let auth: Auth;
 let storage: FirebaseStorage;

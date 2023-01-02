@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, GestureResponderEvent } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { palette, fonts } from 'src/config';
 import { LinearGradient } from 'expo-linear-gradient';
 import { VStack, HStack } from 'react-native-stacks';
@@ -16,7 +16,7 @@ interface Props {
     buttonTitle: string;
     icon: React.ReactElement;
   };
-  onPress: (e: GestureResponderEvent) => void;
+  onPress: () => void;
 }
 
 const TutorialBox = ({ data: { message, buttonTitle, icon }, onPress }: Props) => {

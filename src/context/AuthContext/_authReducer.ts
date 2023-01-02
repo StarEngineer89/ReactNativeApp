@@ -11,7 +11,7 @@ export const authReducer = (state: IAuthState, { type, payload }: IAuthReducerAc
       return {
         ...state,
         loading: false,
-        error: payload.error || 'Something Went Wrong!',
+        error: payload || 'Something Went Wrong!',
       };
 
     case actions.CLEAR_ERROR:

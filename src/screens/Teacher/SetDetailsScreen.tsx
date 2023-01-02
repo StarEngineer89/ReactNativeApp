@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
-import { SETS } from "src/constants/routes";
-import { useTeacher } from "src/hooks";
-import { Button, ContainerView, GridList } from "components/base";
-import { HStack, VStack, Spacer } from "react-native-stacks";
-import { CustomSetImageUploader, GridListItem } from "components/custom";
-import { ProgressComponent } from "components/main";
-import Animated, { Layout, SlideInLeft } from "react-native-reanimated";
-import { StyleGuide } from "src/config";
-import { Listen } from "components/svgs";
-import { playSound } from "src/functions";
-import { DeletingModal } from "components/modals";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { IHomeStackNavigatorParamsList, ISetStackNavigatorParamsList } from "src/navigations/_types";
+import React, { useState, useEffect } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
+import { SETS } from 'src/constants/routes';
+import { useTeacher } from 'src/hooks';
+import { Button, ContainerView, GridList } from 'components/base';
+import { HStack, VStack, Spacer } from 'react-native-stacks';
+import { CustomSetImageUploader, GridListItem } from 'components/custom';
+import { ProgressComponent } from 'components/main';
+import Animated, { Layout, SlideInLeft } from 'react-native-reanimated';
+import { StyleGuide } from 'src/config';
+import { Listen } from 'components/svgs';
+import { playSound } from 'src/functions';
+import { DeletingModal } from 'components/modals';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, ISetStackNavigatorParamsList } from 'src/navigations/_types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
-interface Props extends CompositeScreenProps<IHomeStackNavigatorParamsList, SETS.MAIN>, ISetStackNavigatorParamsList> {}
+interface Props
+  extends CompositeScreenProps<
+    NativeStackScreenProps<ISetStackNavigatorParamsList, SETS.DETAILS>,
+    CompositeScreenProps<NativeStackScreenProps<IHomeStackNavigatorParamsList>, DrawerScreenProps<IHomeDrawerNavigatorParamsList>>
+  > {}
 
-const SetDetailsScreen = ({ route, navigation }) => {
+const SetDetailsScreen = ({ route, navigation }: Props) => {
   const { id, predefined } = route.params;
-  const { state, getCategory, clearCategory, addSetItem, deleteSetItem } =
-    useTeacher();
+  const { state, getCategory, clearCategory, addSetItem, deleteSetItem } = useTeacher();
   const [showConfirm, setshowConfirm] = useState(false);
   const [deleteItem, setdeleteItem] = useState(null);
 
@@ -32,23 +37,19 @@ const SetDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        state.currentCategory &&
-          !predefined &&
-          state.currentCategory.length < 5 ? (
-          <CustomSetImageUploader
-            onSelectImage={(image) => addSetItem(id, image)}
-          />
+        state.currentCategory && !predefined && state.currentCategory.length < 5 ? (
+          <CustomSetImageUploader onSelectImage={image => addSetItem(id, image)} />
         ) : null,
     });
   }, [state.currentCategory]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       // do something
       if (route.params?.itemIndex) setItemIndexIndex(route.params?.itemIndex);
     });
 
-    const unsubscribe1 = navigation.addListener("beforeRemove", () => {
+    const unsubscribe1 = navigation.addListener('beforeRemove', () => {
       // do something
       clearCategory();
     });
@@ -77,10 +78,7 @@ const SetDetailsScreen = ({ route, navigation }) => {
         data={state.currentCategory}
         renderDetails={({ item, index }) => {
           return (
-            <Animated.View
-              entering={SlideInLeft.springify().delay(index * 10)}
-              layout={Layout.delay(200)}
-            >
+            <Animated.View entering={SlideInLeft.springify().delay(index * 10)} layout={Layout.delay(200)}>
               <GridListItem
                 uri={item.image}
                 defaultSource={item.slug}
@@ -89,28 +87,17 @@ const SetDetailsScreen = ({ route, navigation }) => {
                     subCategoryIndex: index,
                     predefined,
                   })
-                }
-              >
+                }>
                 <VStack style={{ flex: 1 }} alignment="leading">
                   <Spacer />
                   <HStack>
-                    <Text
-                      numOfLines={2}
-                      style={StyleGuide.typography.gridItemHeader}
-                    >
+                    <Text numberOfLines={2} style={StyleGuide.typography.gridItemHeader}>
                       {item.name}
                     </Text>
                     <Spacer />
                     {item.voiceURL && (
-                      <TouchableOpacity
-                        onPress={() => playSound(item.voiceURL)}
-                        activeOpacity={1}
-                        style={{ padding: 10 }}
-                      >
-                        <Listen
-                          width={StyleGuide.sizes.listenIcon}
-                          height={StyleGuide.sizes.listenIcon}
-                        />
+                      <TouchableOpacity onPress={() => playSound(item.voiceURL)} activeOpacity={1} style={{ padding: 10 }}>
+                        <Listen width={StyleGuide.sizes.listenIcon} height={StyleGuide.sizes.listenIcon} />
                       </TouchableOpacity>
                     )}
                   </HStack>

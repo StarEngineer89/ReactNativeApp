@@ -1,10 +1,10 @@
 import { Dispatch } from 'react';
-import { ClassRoom, IStudentCategory, ITeacherCategory, News, Student, Teacher } from 'src/entities';
+import { Category, ClassRoom, News, Student, StudentCategory, Teacher } from 'src/entities';
 import actions from './_actionNames';
 
 export interface IMentorState {
   profileInfo: Teacher;
-  categories: ITeacherCategory[];
+  categories: Category[];
   students: Student[];
   classrooms: ClassRoom[];
   news: News[];
@@ -29,15 +29,15 @@ export interface IMentorState {
     loading: boolean;
     error?: string;
   };
-  customSets: ITeacherCategory[];
+  customSets: Category[];
   studentCategory: {
     loading: boolean;
     error?: string;
-    category: IStudentCategory;
+    category: StudentCategory;
   };
   loading: boolean;
   error: string | null;
-  currentCategory: ITeacherCategory[];
+  currentCategory: Category[];
   currentDrawer: 'Home' | 'Profile';
 }
 
@@ -74,21 +74,17 @@ export type IMentorReducerAction =
     }
   | {
       type: actions.GETTING_STUDENT_CATEGORY_SUCCESS | actions.GET_CATEGORY_PROGRESS;
-      payload: ITeacherCategory;
+      payload: Category;
     }
   | {
       type: actions.CREATE_STUDENT;
       payload: Student;
     }
   | {
-      type: actions.SET_DRAWER;
-      payload: string;
-    }
-  | {
       type: actions.GET_PROFILE_SUCCEEDED;
       payload: {
         teacher: Teacher;
-        categories: ITeacherCategory[];
+        categories: Category[];
         students: Student[];
         news: News[];
         tutorials: {
@@ -99,7 +95,7 @@ export type IMentorReducerAction =
     }
   | {
       type: actions.RECORD_CATEGORY_ITEM_REMOTE;
-      payload: ITeacherCategory;
+      payload: Category;
     }
   | {
       type: actions.CONFIRM_TUTORIAL;
@@ -112,12 +108,31 @@ export type IMentorReducerAction =
       type: actions.RECORD_CATEGORY_ITEM_LOCAL;
       payload: {
         id: string;
-        voiceURL: string;
+        voiceURL: {
+          uri: string;
+        };
       };
     }
   | {
-      type: actions.ADDING_SET_ITEM | actions.EDITING_SET_ITEM_IMAGE;
-      payload: ITeacherCategory;
+      type: actions.SET_DRAWER | actions.SAVING_STUDENT_ERROR | actions.SAVING_SET_ERROR;
+      payload: string;
+    }
+  | {
+      type: actions.EDITING_STUDENT_IMAGE | actions.EDITING_SET_ITEM_IMAGE | actions.EDITING_SET_IMAGE;
+      payload:
+        | {
+            id: string;
+            uploading: true;
+          }
+        | {
+            id: string;
+            image: string;
+            upload: undefined | false;
+          };
+    }
+  | {
+      type: actions.ADDING_SET_ITEM;
+      payload: Category;
     }
   | {
       type: actions.DELETE_SET_ITEM_SUCCEEDED | actions.DELETE_SET_SUCCEEDED | actions.DELETE_STUDENT_SUCCEEDED;
@@ -125,23 +140,36 @@ export type IMentorReducerAction =
     }
   | {
       type: actions.EDITING_PROFILE_IMAGE;
-      payload: Teacher;
+      payload: Partial<Teacher>;
     }
   | {
       type: actions.CREATE_SET;
-      payload: ITeacherCategory;
+      payload: Category;
     }
   | {
-      type: actions.EDITING_STUDENT_SUCCEEDED | actions.EDITING_STUDENT_IMAGE;
+      type: actions.EDITING_STUDENT_SUCCEEDED;
       payload: Student;
     }
   | {
       type: actions.EDITING_SET_SUCCEEDED;
-      payload: ITeacherCategory;
+      payload: {
+        id: string;
+        name: string;
+      };
+    }
+  | {
+      type: actions.EDITING_SET_IMAGE;
+      payload: {
+        id: string;
+        uploading: boolean;
+      };
     }
   | {
       type: actions.RATING_VOICE_SUCCEEDED;
-      payload: {};
+      payload: {
+        childId: string;
+        score: number;
+      };
     };
 
 export type IMentorDispatch = Dispatch<IMentorReducerAction>;

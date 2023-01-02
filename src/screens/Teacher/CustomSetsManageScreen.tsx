@@ -7,8 +7,18 @@ import { useTeacher, useDeviceInfo } from 'src/hooks';
 import Animated, { Layout, SlideInLeft, ZoomOut } from 'react-native-reanimated';
 import { AddButton } from 'components/custom';
 import { ContainerView, Image, Button } from 'components/base';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, ISetStackNavigatorParamsList } from 'src/navigations/_types';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
-const CustomSetsManageScreen = ({ navigation }) => {
+interface Props
+  extends CompositeScreenProps<
+    NativeStackScreenProps<ISetStackNavigatorParamsList, SETS.MANAGE_CUSTOMS>,
+    CompositeScreenProps<NativeStackScreenProps<IHomeStackNavigatorParamsList>, DrawerScreenProps<IHomeDrawerNavigatorParamsList>>
+  > {}
+
+const CustomSetsManageScreen = ({ navigation }: Props) => {
   const { state, addSet, deleteSet } = useTeacher();
   const [showConfirm, setshowConfirm] = useState(false);
   const [deleteItem, setdeleteItem] = useState(null);
@@ -50,12 +60,12 @@ const CustomSetsManageScreen = ({ navigation }) => {
           // style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(_, index) => index.toString()}
           contentContainerStyle={{
             alignSelf: isLandscape ? 'flex-start' : 'center',
             paddingTop: 10,
           }}
-          renderItem={({ item, index }) => {
+          renderItem={({ item }) => {
             return (
               <Animated.View entering={SlideInLeft.springify().delay(200)} exiting={ZoomOut.delay(200)} layout={Layout.delay(500)}>
                 <HStack

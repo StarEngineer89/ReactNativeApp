@@ -4,7 +4,7 @@ export const initialState: IPupilState = {
   _id: null,
   image: null,
   name: null,
-  classrooms: null,
+  classroom: null,
   loading: true,
   error: null,
   currentCategory: null,

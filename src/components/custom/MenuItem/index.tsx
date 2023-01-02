@@ -1,6 +1,6 @@
 import GradientSVG from 'components/svgs/GradientSVG';
 import React from 'react';
-import { Pressable, Text, GestureResponderEvent } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import { HStack, Spacer } from 'react-native-stacks';
 import Svg, { Circle, SvgProps } from 'react-native-svg';
 import { palette, StyleGuide } from 'src/config';
@@ -20,7 +20,7 @@ const IndicatorDot = ({ fillColor, ...props }: IDotProps) => (
 
 interface IMenuItemProps {
   active?: boolean;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: () => void;
   title: string;
   showIndicator?: boolean;
 }

@@ -13,11 +13,15 @@ interface ClassRoom {
   image: string;
   students: string[];
   language: string;
+  recorded: number;
+  total: number;
   categories: {
+    _id: string;
     categoryId: string;
     name: string;
     image: string;
     predefined: boolean;
+    recorded: number;
     total: number;
     children: Student[];
   }[];

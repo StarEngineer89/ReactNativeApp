@@ -27,7 +27,7 @@ const getCategory = (dispatch: IPupilDispatch) => async (studentId: string, clas
 
     // dispatch({ type: actions.GET_CLASSROOM_CATEGORY, payload: response.data });
 
-    let payload = await cacheStudentCategoryVoices(response.data.category);
+    let payload: any = await cacheStudentCategoryVoices(response.data.category);
 
     dispatch({ type: actions.GET_CLASSROOM_CATEGORY, payload });
   } catch (error) {}

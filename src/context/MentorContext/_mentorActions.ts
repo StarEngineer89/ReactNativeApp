@@ -4,29 +4,29 @@ import api from 'src/api/server';
 import { STORAGE } from 'src/constants';
 import { cacheCategoryVoices, cacheStudentCategoryVoices } from 'src/helpers/downloader';
 import { navigateBack, navigationRef } from 'src/refs';
-import _actions from './_actionNames';
-import { Category, IStudentCategory, Student } from 'src/entities';
+import actions from './_actionNames';
 import { IMentorDispatch } from './_types';
+import { Category } from 'src/entities';
 
 const getProfile = (dispatch: IMentorDispatch) => async () => {
   try {
     const response = await api.get('/api/teachers/me');
     if (response.data.success) {
       dispatch({
-        type: _actions.GET_PROFILE_SUCCEEDED,
+        type: actions.GET_PROFILE_SUCCEEDED,
         payload: response.data.profile,
       });
     } else {
-      dispatch({ type: _actions.ERROR });
+      dispatch({ type: actions.ERROR });
     }
   } catch (error) {
-    dispatch({ type: _actions.ERROR });
+    dispatch({ type: actions.ERROR });
   }
 };
 
 const getStudentClassroomCategory =
   (dispatch: IMentorDispatch) => async (studentId: string, classroomId: string, categoryId: string, predefined: boolean) => {
-    dispatch({ type: 'GETTING_STUDENT_CATEGORY' });
+    dispatch({ type: actions.GETTING_STUDENT_CATEGORY });
 
     try {
       const response = await api.post(`/api/students/${studentId}/classrooms/${classroomId}/category/${categoryId}`, {
@@ -34,24 +34,24 @@ const getStudentClassroomCategory =
         language: 'default',
       });
 
-      let payload = await cacheStudentCategoryVoices(response.data.category);
-      dispatch({ type: 'GETTING_STUDENT_CATEGORY_SUCCESS', payload });
+      let payload: any = await cacheStudentCategoryVoices(response.data.category);
+      dispatch({ type: actions.GETTING_STUDENT_CATEGORY_SUCCESS, payload });
     } catch (error) {
-      dispatch({ type: 'GETTING_STUDENT_CATEGORY_FAILURE' });
+      dispatch({ type: actions.GETTING_STUDENT_CATEGORY_FAILURE });
     }
   };
 
 const updateTeacher = (dispatch: IMentorDispatch) => async (name: string, image: string, isImageNew: boolean) => {
-  dispatch({ type: 'UPDATING_PROFILE' });
+  dispatch({ type: actions.UPDATING_PROFILE });
   try {
     await api.put('/api/teachers/me', { name });
-    dispatch({ type: _actions.EDITING_PROFILE_SUCCEEDED, payload: name });
+    dispatch({ type: actions.EDITING_PROFILE_SUCCEEDED, payload: name });
 
     navigateBack();
 
     if (isImageNew) {
       dispatch({
-        type: _actions.EDITING_PROFILE_IMAGE,
+        type: actions.EDITING_PROFILE_IMAGE,
         payload: { uploading: true },
       });
       const url = await uploadToDirectory(STORAGE.profiles, image);
@@ -59,27 +59,27 @@ const updateTeacher = (dispatch: IMentorDispatch) => async (name: string, image:
       await api.put('/api/teachers/me/update-image', { image: url });
 
       dispatch({
-        type: _actions.EDITING_PROFILE_IMAGE,
+        type: actions.EDITING_PROFILE_IMAGE,
         payload: { image: url, uploading: undefined },
       });
     }
   } catch (error) {
-    dispatch({ type: 'UPDATING_PROFILE_ERROR' });
+    dispatch({ type: actions.UPDATING_PROFILE_ERROR });
   }
 };
 
 const sendMessage = (dispatch: IMentorDispatch) => async (subject: string, body: string) => {
-  dispatch({ type: 'MESSAGE_SEND' });
+  dispatch({ type: actions.MESSAGE_SEND });
   try {
     await api.post(`/users/api/send-ticket`, { subject, body });
-    dispatch({ type: 'MESSAGE_SENT' });
+    dispatch({ type: actions.MESSAGE_SENT });
   } catch (error) {
-    dispatch({ type: 'MESSAGE_ERROR' });
+    dispatch({ type: actions.MESSAGE_ERROR });
   }
 };
 
 const clearMessage = (dispatch: IMentorDispatch) => () => {
-  dispatch({ type: 'MESSAGE_CLEAR' });
+  dispatch({ type: actions.MESSAGE_CLEAR });
 };
 
 const clearError =
@@ -87,29 +87,29 @@ const clearError =
   (key = 'GENERAL') => {
     switch (key) {
       case 'STUDENT':
-        dispatch({ type: _actions.SAVING_STUDENT_CLEAR_ERROR });
+        dispatch({ type: actions.SAVING_STUDENT_CLEAR_ERROR });
         break;
       case 'SET':
-        dispatch({ type: _actions.SAVING_SET_CLEAR_ERROR });
+        dispatch({ type: actions.SAVING_SET_CLEAR_ERROR });
         break;
       case 'PROFILE':
-        dispatch({ type: 'UPDATING_PROFILE_ERROR_CLEAR' });
+        dispatch({ type: actions.UPDATING_PROFILE_ERROR_CLEAR });
         break;
       default:
-        dispatch({ type: _actions.CLEAR_ERROR });
+        dispatch({ type: actions.CLEAR_ERROR });
         break;
     }
   };
 
 const clearStudentClassroomCategory = (dispatch: IMentorDispatch) => () => {
-  dispatch({ type: 'CLEAR_STUDENT_CATEGORY' });
+  dispatch({ type: actions.CLEAR_STUDENT_CATEGORY });
 };
 
 const rateVoice = (dispatch: IMentorDispatch) => async (studentId: string, childId: string, cId: string, score: number) => {
   try {
     await api.put(`/api/students/${studentId}/rate/${childId}/classroom/${cId}`, { score });
     dispatch({
-      type: _actions.RATING_VOICE_SUCCEEDED,
+      type: actions.RATING_VOICE_SUCCEEDED,
       payload: { childId, score },
     });
   } catch (error) {}
@@ -121,7 +121,7 @@ const addStudent = (dispatch: IMentorDispatch) => async () => {
 
     if (response.data.success) {
       dispatch({
-        type: _actions.CREATE_STUDENT,
+        type: actions.CREATE_STUDENT,
         payload: response.data.student,
       });
 
@@ -139,85 +139,84 @@ const addStudent = (dispatch: IMentorDispatch) => async () => {
   }
 };
 
-const editStudent =
-  (dispatch: IMentorDispatch) => async (id: string, name: string, categories: IStudentCategory[], image: string, isNewImage: boolean) => {
-    dispatch({ type: _actions.SAVING_STUDENT_STARTED });
-    try {
-      const response = await api.put(`/api/students/${id}`, {
-        name,
-        categories,
-      });
+const editStudent = (dispatch: IMentorDispatch) => async (id: string, name: string, categories: Category[], image: string, isNewImage: boolean) => {
+  dispatch({ type: actions.SAVING_STUDENT_STARTED });
+  try {
+    const response = await api.put(`/api/students/${id}`, {
+      name,
+      categories,
+    });
+    dispatch({
+      type: actions.EDITING_STUDENT_SUCCEEDED,
+      payload: response.data.student,
+    });
+
+    navigateBack();
+
+    if (isNewImage) {
       dispatch({
-        type: _actions.EDITING_STUDENT_SUCCEEDED,
-        payload: response.data.student,
+        type: actions.EDITING_STUDENT_IMAGE,
+        payload: { id, uploading: true },
       });
 
-      navigateBack();
+      const url = await uploadToDirectory(STORAGE.profiles, image);
 
-      if (isNewImage) {
-        dispatch({
-          type: _actions.EDITING_STUDENT_IMAGE,
-          payload: { id, uploading: true },
-        });
-
-        const url = await uploadToDirectory(STORAGE.profiles, image);
-
-        await api.put(`/api/students/${id}/update-image`, { image: url });
-
-        dispatch({
-          type: _actions.EDITING_STUDENT_IMAGE,
-          payload: { id, image: url, uploading: undefined },
-        });
-      }
-    } catch (error) {
-      let payload = 'Network Error';
-
-      if (error.response) {
-        if (error.response.status === 400) {
-          payload = error.response.data.errors[0].msg;
-        } else {
-          payload = error.response.data.message;
-        }
-      }
+      await api.put(`/api/students/${id}/update-image`, { image: url });
 
       dispatch({
-        type: _actions.SAVING_STUDENT_ERROR,
-        payload,
+        type: actions.EDITING_STUDENT_IMAGE,
+        payload: { id, image: url, uploading: undefined },
       });
     }
-  };
+  } catch (error) {
+    let payload = 'Network Error';
+
+    if (error.response) {
+      if (error.response.status === 400) {
+        payload = error.response.data.errors[0].msg;
+      } else {
+        payload = error.response.data.message;
+      }
+    }
+
+    dispatch({
+      type: actions.SAVING_STUDENT_ERROR,
+      payload,
+    });
+  }
+};
 
 const deleteStudent = (dispatch: IMentorDispatch) => async (id: string) => {
   try {
     await api.delete(`/api/students/${id}`);
 
-    dispatch({ type: _actions.DELETE_STUDENT_SUCCEEDED, payload: id });
+    dispatch({ type: actions.DELETE_STUDENT_SUCCEEDED, payload: id });
   } catch (error) {}
 };
 
 const clearState = (dispatch: IMentorDispatch) => () => {
-  dispatch({ type: _actions.CLEAR_STATE });
+  dispatch({ type: actions.CLEAR_STATE });
 };
 
 const getCategory = (dispatch: IMentorDispatch) => async (id: string, predefined: boolean) => {
   try {
     const response = await api.get(`/api/teachers/me/category/${id}/${predefined}`);
 
-    let payload = await cacheCategoryVoices(response.data.category);
+    let payload: any = await cacheCategoryVoices(response.data.category);
 
-    dispatch({ type: _actions.GET_CATEGORY_PROGRESS, payload });
+    dispatch({ type: actions.GET_CATEGORY_PROGRESS, payload });
   } catch (error) {}
 };
 
 const clearCategory = (dispatch: IMentorDispatch) => () => {
-  dispatch({ type: _actions.CLEAR_CATEGORY_PROGRESS });
+  dispatch({ type: actions.CLEAR_CATEGORY_PROGRESS });
 };
 
 // _ is a variable used in place of oldVoice argument but since it wasn't being used, i replaced it with _ for the time being
-const recordMentorVoice = (dispatch: IMentorDispatch) => async (catId: string, uri: string, _: boolean, predefined: boolean) => {
+const recordMentorVoice = (dispatch: IMentorDispatch) => async (catId: string, uri: string, _: string, predefined: boolean) => {
   try {
     dispatch({
-      type: _actions.RECORD_CATEGORY_ITEM_LOCAL,
+      type: actions.RECORD_CATEGORY_ITEM_LOCAL,
       payload: { id: catId, voiceURL: { uri } },
     });
 
@@ -230,7 +229,7 @@ const recordMentorVoice = (dispatch: IMentorDispatch) => async (catId: string, u
 
     // const payload = await cacheNewVoice(response.data.record, oldVoice);
 
-    // dispatch({ type: _actions.RECORD_CATEGORY_ITEM_REMOTE, payload });
+    // dispatch({ type: actions.RECORD_CATEGORY_ITEM_REMOTE, payload });
   } catch (error) {
     // console.log(error);
   }
@@ -245,7 +244,7 @@ const confirmTutorial = (dispatch: IMentorDispatch) => async (students: boolean,
 
     if (response.data.success) {
       dispatch({
-        type: _actions.CONFIRM_TUTORIAL,
+        type: actions.CONFIRM_TUTORIAL,
         payload: { students, categories },
       });
     }
@@ -255,7 +254,7 @@ const confirmTutorial = (dispatch: IMentorDispatch) => async (students: boolean,
 };
 
 const setDrawerItem = (dispatch: IMentorDispatch) => (item: string) => {
-  dispatch({ type: 'set_drawer', payload: item });
+  dispatch({ type: actions.SET_DRAWER, payload: item });
 };
 
 const addSet = (dispatch: IMentorDispatch) => async () => {
@@ -263,7 +262,7 @@ const addSet = (dispatch: IMentorDispatch) => async () => {
     const response = await api.post('/api/teachers/me/category');
 
     if (response.data.success) {
-      dispatch({ type: _actions.CREATE_SET, payload: response.data.category });
+      dispatch({ type: actions.CREATE_SET, payload: response.data.category });
       setTimeout(
         () =>
           navigationRef.current.navigate(SETS.MAIN, {
@@ -279,14 +278,14 @@ const addSet = (dispatch: IMentorDispatch) => async () => {
 };
 
 const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, image: string, isNewImage: boolean) => {
-  dispatch({ type: _actions.SAVING_SET_STARTED });
+  dispatch({ type: actions.SAVING_SET_STARTED });
   try {
     const response = await api.put(`/api/teachers/me/category/${id}`, {
       name,
     });
     if (response.data.success) {
       dispatch({
-        type: _actions.EDITING_SET_SUCCEEDED,
+        type: actions.EDITING_SET_SUCCEEDED,
         payload: { id, name },
       });
 
@@ -294,7 +293,7 @@ const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, 
 
       if (isNewImage) {
         dispatch({
-          type: _actions.EDITING_SET_IMAGE,
+          type: actions.EDITING_SET_IMAGE,
           payload: { id, uploading: true },
         });
 
@@ -305,7 +304,7 @@ const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, 
         });
 
         dispatch({
-          type: _actions.EDITING_SET_IMAGE,
+          type: actions.EDITING_SET_IMAGE,
           payload: { id, image: url, uploading: undefined },
         });
       }
@@ -322,7 +321,7 @@ const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, 
     }
 
     dispatch({
-      type: _actions.SAVING_SET_ERROR,
+      type: actions.SAVING_SET_ERROR,
       payload,
     });
   }
@@ -334,12 +333,12 @@ const addSetItem = (dispatch: IMentorDispatch) => async (id: string, image: stri
     if (response.data.success) {
       let newItem = response.data.categoryItem;
       dispatch({
-        type: _actions.ADDING_SET_ITEM,
+        type: actions.ADDING_SET_ITEM,
         payload: newItem,
       });
 
       dispatch({
-        type: _actions.EDITING_SET_ITEM_IMAGE,
+        type: actions.EDITING_SET_ITEM_IMAGE,
         payload: { id: newItem._id, uploading: true },
       });
 
@@ -350,7 +349,7 @@ const addSetItem = (dispatch: IMentorDispatch) => async (id: string, image: stri
       });
 
       dispatch({
-        type: _actions.EDITING_SET_ITEM_IMAGE,
+        type: actions.EDITING_SET_ITEM_IMAGE,
         payload: {
           id: newItem._id,
           image: url,
@@ -365,7 +364,7 @@ const deleteSet = (dispatch: IMentorDispatch) => async (id: string) => {
   try {
     await api.delete(`/api/teachers/me/category/${id}`);
 
-    dispatch({ type: _actions.DELETE_SET_SUCCEEDED, payload: id });
+    dispatch({ type: actions.DELETE_SET_SUCCEEDED, payload: id });
   } catch (error) {}
 };
 
@@ -373,7 +372,7 @@ const deleteSetItem = (dispatch: IMentorDispatch) => async (id: string) => {
   try {
     await api.delete(`/api/teachers/me/category/${id}`);
 
-    dispatch({ type: _actions.DELETE_SET_ITEM_SUCCEEDED, payload: id });
+    dispatch({ type: actions.DELETE_SET_ITEM_SUCCEEDED, payload: id });
   } catch (error) {}
 };
 

@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { ClassRoom, IStudentCategory, IStudentRecording, Student } from 'src/entities';
+import { Category, ClassRoom, Student, StudentCategory } from 'src/entities';
 import actions from './_actionNames';
 
 export interface IPupilState {
@@ -9,7 +9,7 @@ export interface IPupilState {
   classroom: ClassRoom;
   loading: true;
   error: string | null;
-  currentCategory: IStudentCategory;
+  currentCategory: StudentCategory;
 }
 
 export type IPupilReducerAction =
@@ -18,20 +18,29 @@ export type IPupilReducerAction =
       payload?: {};
     }
   | {
-      type: actions.RECORD_ITEM_LOCAL;
-      payload: IStudentRecording;
+      type: actions.RECORD_ITEM_LOCAL | actions.RECORD_ITEM_REMOTE;
+      payload: {
+        id: string;
+        studentVoiceURL: {
+          uri: string;
+        };
+      };
     }
   | {
       type: actions.GET_CLASSROOM_CATEGORY;
-      payload: IStudentCategory;
+      payload: Category;
     }
   | {
       type: actions.GET_STUDENT;
       payload: Student;
     }
   | {
+      type: actions.UPDATE_CLASSROOM_PROGRESS;
+      payload: string;
+    }
+  | {
       type: actions.GET_CLASSROOM_CATEGORY;
-      payload: IStudentCategory;
+      payload: Category;
     };
 
 export type IPupilDispatch = Dispatch<IPupilReducerAction>;

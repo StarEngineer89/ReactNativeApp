@@ -1,22 +1,22 @@
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Animated, { Layout, ZoomIn, ZoomInRotate, ZoomOut } from 'react-native-reanimated';
 import { HStack, Spacer, VStack } from 'react-native-stacks';
 import { StyleGuide } from 'src/config';
 import { Tutorials } from 'src/constants';
 import { Image, HList } from 'components/base';
 import { AddButton, TutorialBox } from 'components/custom';
-import { ITeacherCategory } from 'src/entities';
+import { Student } from 'src/entities';
 
 interface Props {
   showList: boolean;
   showEdit: boolean;
-  onEdit: (e: GestureResponderEvent) => void;
-  data: ITeacherCategory[];
-  showAdd: boolean;
-  onAdd: (e: GestureResponderEvent) => void;
-  onPressItem: (item: ITeacherCategory) => void;
-  onConfirmTutorial: (e: GestureResponderEvent) => void;
+  onEdit: () => void;
+  data: Student[];
+  showAdd?: boolean;
+  onAdd: () => void;
+  onPressItem: (item: Student) => void;
+  onConfirmTutorial: () => void;
 }
 
 const StudentsList = (props: Props) => {

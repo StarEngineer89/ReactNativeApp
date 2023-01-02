@@ -7,7 +7,6 @@ interface News {
   classroom: string;
   category: Category;
   message: string;
-  updatedAt: Date;
 }
 
 export default News;

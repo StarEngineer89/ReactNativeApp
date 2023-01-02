@@ -1,7 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { IHomeDrawerNavigatorParamsList } from 'src/navigations/_types';
 
-export const navigationRef = createNavigationContainerRef<IHomeDrawerNavigatorParamsList>();
+export const navigationRef = createNavigationContainerRef<any>();
 
 export const navigate = (name: any, params: any) => {
   navigationRef.current?.navigate(name, params);

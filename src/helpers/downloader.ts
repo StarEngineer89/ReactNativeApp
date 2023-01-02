@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import * as Crypto from 'expo-crypto';
-import { IStudentRecording, ITeacherRecording } from 'src/entities';
+import { Recording } from 'src/entities';
 
 const _digestUrl = async (_string: string) => {
   const digest = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, _string);
@@ -42,7 +42,7 @@ const _checkAndDownload = async (uri: string) => {
 };
 
 // TODO: type this
-export const cacheNewVoice = async (category: ITeacherRecording, oldVoice: string) => {
+export const cacheNewVoice = async (category: Recording, oldVoice: string) => {
   return new Promise(async (resolve, _) => {
     if (oldVoice != null) await _deleteCachedURI(oldVoice);
 
@@ -54,18 +54,7 @@ export const cacheNewVoice = async (category: ITeacherRecording, oldVoice: strin
   });
 };
 
-export const cacheStudentNewVoice = async (category: IStudentRecording, oldVoice: string) => {
-  return new Promise(async (resolve, _) => {
-    if (oldVoice != null) await _deleteCachedURI(oldVoice);
-    const localFile = await _checkAndDownload(category.studentVoiceURL);
-
-    let _category = { ...category, studentVoiceURL: localFile };
-
-    resolve(_category);
-  });
-};
-
-export const cacheCategoryVoices = async (category: ITeacherRecording[]) => {
+export const cacheCategoryVoices = async (category: Recording[]) => {
   return new Promise(async (resolve, _) => {
     // removing null voices
     let voices = category.filter(voice => voice.voiceURL !== null);

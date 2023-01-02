@@ -8,7 +8,7 @@ import { palette, StyleGuide } from 'src/config';
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface Props {
-  onSelectImage: Function;
+  onSelectImage: (image: string) => void;
 }
 
 const CustomSetImageUploader = ({ onSelectImage }: Props) => {

@@ -6,15 +6,15 @@ import { isTablet } from 'src/functions';
 import { HStack, Spacer, VStack } from 'react-native-stacks';
 import GridListItem from '../GridListItem';
 import { ContainerView, GridList, Button } from 'components/base';
-import { ITeacherCategory } from 'src/entities';
+import { Category } from 'src/entities';
 
 const _getHeaderLoader = () => {
   return <ActivityIndicator size="small" color={palette.primary} />;
 };
 
 interface Props {
-  data: ITeacherCategory[];
-  selected: ITeacherCategory[];
+  data: Category[];
+  selected: Category[];
   setSelected: Dispatch<SetStateAction<T[]>>;
   navigateBack: Function;
   navigation: any;

@@ -1,20 +1,5 @@
-export interface ITeacherCategory {
-  id: string;
-  _id: string;
-  name?: string;
-  image: string;
-  parent?: string;
-  sortOrder: number;
-  predefined: boolean;
-}
-
-export interface ITeacherRecording {
-  _id: string;
-  category: string;
-  voiceURL?: string;
-  language: string;
-  predefined: boolean;
-}
+import Category from './Category';
+import Recording from './Recording';
 
 interface Teacher {
   _id: string;
@@ -27,8 +12,8 @@ interface Teacher {
     classrooms: boolean;
   };
   languages: string[];
-  categories: ITeacherCategory[];
-  recordings: ITeacherRecording[];
+  categories: Category[];
+  recordings: Recording[];
   uploading: boolean;
 }
 

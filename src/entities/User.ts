@@ -1,15 +1,9 @@
 interface User {
   _id: string;
-  name: string;
+  authType: string;
   email: string;
-  active: boolean;
+  name: string;
   verified: boolean;
-  verificationCode: string;
-  resetPasswordToken: string;
-  resetPasswordExpiresIn: Date | string;
-  socialId: string;
-  authType: string; // TODO: confirm this type
-  loginAttempt: number;
 }
 
 export default User;

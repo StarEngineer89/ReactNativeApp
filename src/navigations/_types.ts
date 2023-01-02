@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { AUTH, CONTACT_US, DRAWER, PROFILE, SETS, STUDENT, STUDENTS, TABS, TEACHER } from 'src/constants/routes';
-import { IStudentCategory } from 'src/entities';
+import { StudentCategory } from 'src/entities';
 
 export type IAuthStackNavigatorParamsList = {
   [AUTH.GETTING_STARTED]: undefined;
@@ -31,13 +31,14 @@ export type ISetStackNavigatorParamsList = {
     id?: string;
     itemIndex?: number;
     predefined?: boolean;
+    length?: number;
   };
 };
 
 export type IStudentStackNavigatorParamsList = {
   [STUDENTS.EDIT]: {
     id: string;
-    sets?: IStudentCategory[];
+    sets?: StudentCategory[];
   };
   [STUDENTS.MANAGE]: undefined;
   [STUDENTS.SELECT_SETS]?: {

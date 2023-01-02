@@ -1,6 +1,5 @@
 import { Animated } from 'react-native';
 import { Audio } from 'expo-av';
-import { AVPlaybackSource } from 'expo-av/build/AV.types';
 
 export const recordingSettings = {
   android: {
@@ -44,7 +43,7 @@ export const animation = (
     useNativeDriver: true,
   });
 
-export async function playSound(sound: AVPlaybackSource, setPlaying: () => void) {
+export async function playSound(sound: string, setPlaying: () => void) {
   await Audio.setAudioModeAsync({
     allowsRecordingIOS: false,
     playsInSilentModeIOS: true,
@@ -54,7 +53,7 @@ export async function playSound(sound: AVPlaybackSource, setPlaying: () => void)
     playThroughEarpieceAndroid: false,
   });
 
-  Audio.Sound.createAsync(sound, { shouldPlay: true })
+  Audio.Sound.createAsync({ uri: sound }, { shouldPlay: true })
     .then(res => {
       res.sound.setOnPlaybackStatusUpdate(status => {
         if (status.isLoaded && !status.didJustFinish) return;

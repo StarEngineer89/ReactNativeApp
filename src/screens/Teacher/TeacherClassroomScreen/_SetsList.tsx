@@ -1,12 +1,12 @@
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Animated, { Layout, ZoomInRotate } from 'react-native-reanimated';
 import { HStack, Spacer, VStack } from 'react-native-stacks';
 import { StyleGuide } from 'src/config';
 import { Tutorials } from 'src/constants';
 import { Image, HList } from 'components/base';
 import { TutorialBox } from 'components/custom';
-import { ITeacherCategory } from 'src/entities';
+import { Category } from 'src/entities';
 
 const arrayToarrays = <T,>(array: T[]) => {
   let output = [];
@@ -23,10 +23,10 @@ const arrayToarrays = <T,>(array: T[]) => {
 interface Props {
   showList: boolean;
   showEdit: boolean;
-  onEdit: (e: GestureResponderEvent) => void;
-  onPressItem: (item: ITeacherCategory) => void;
-  data: ITeacherCategory[];
-  onConfirmTutorial: (e: GestureResponderEvent) => void;
+  onEdit: () => void;
+  onPressItem: (item: Category) => void;
+  data: Category[];
+  onConfirmTutorial: () => void;
 }
 
 const SetsList = (props: Props) => {

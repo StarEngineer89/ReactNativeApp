@@ -6,6 +6,7 @@ import { DrawerActions } from '@react-navigation/native';
 import { anonymousLogin, anonymousLogOut, checkFirebaseAuth } from 'src/api/firebase';
 import { AxiosError } from 'axios';
 import { IAuthDispatch } from './_types';
+import { ILoginResponse, IUpdatePasswordResponse } from 'src/api/interfaces';
 
 const handleAuthError = (error: AxiosError) => {
   let payload = 'Network Error';
@@ -43,11 +44,12 @@ const signup = (dispatch: IAuthDispatch) => async (name: string, email: string, 
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.post('/users/api/signup', {
+    const response = await api.post<ILoginResponse>('/users/api/signup', {
       name,
       email,
       password,
     });
+
     await AsyncStorage.setItem('TOKEN', response.data.token);
     await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
@@ -83,7 +85,7 @@ const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: str
 
 const login = (dispatch: IAuthDispatch) => async (email: string, password: string) => {
   try {
-    const response = await api.post('/users/api/login', { email, password });
+    const response = await api.post<ILoginResponse>('/users/api/login', { email, password });
 
     await AsyncStorage.setItem('TOKEN', response.data.token);
 
@@ -93,9 +95,10 @@ const login = (dispatch: IAuthDispatch) => async (email: string, password: strin
 
     dispatch({ type: actions.LOGIN_SUCCEEDED });
   } catch (error) {
+    console.log(error);
     if (error.reponse && error.response.status === 401) {
       dispatch({
-        type: 'UPDATE_ATTEMPTS',
+        type: actions.UPDATE_ATTEMPTS,
         payload: error.response.data.attempts,
       });
     }
@@ -148,7 +151,7 @@ const getProfiles = (dispatch: IAuthDispatch) => async () => {
   dispatch({ type: actions.GET_PROFILES_STARTED });
 
   try {
-    const response = await api.get('/users/api/me');
+    const response = await api.get<ILoginResponse>('/users/api/me');
 
     if (response.data.success) {
       setTimeout(() => {
@@ -193,15 +196,17 @@ const clearReset = (dispatch: IAuthDispatch) => () => {
   dispatch({ type: actions.RESET_CLEAR });
 };
 
-const selectProfile = (dispatch: IAuthDispatch) => profile => {
-  dispatch({ type: actions.SELECT_PROFILE, payload: profile });
-};
+const selectProfile =
+  (dispatch: IAuthDispatch) =>
+  ({ id, type }: { id: string; type: number }) => {
+    dispatch({ type: actions.SELECT_PROFILE, payload: { id, type } });
+  };
 
 const changePassword = (dispatch: IAuthDispatch) => async (old: string, password: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.put('/users/api/update-password', {
+    const response = await api.put<IUpdatePasswordResponse>('/users/api/update-password', {
       old,
       password,
     });

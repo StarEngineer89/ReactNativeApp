@@ -7,8 +7,18 @@ import Animated, { SlideInLeft, Layout } from 'react-native-reanimated';
 import { GridListItem, ProgressBarView, ProgressLineBar } from 'components/custom';
 import { ContainerView, GridList } from 'components/base';
 import { StyleGuide } from 'src/config';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, IStudentStackNavigatorParamsList } from 'src/navigations/_types';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
-const StudentClassScreen = ({ navigation, route }) => {
+interface Props
+  extends CompositeScreenProps<
+    NativeStackScreenProps<IStudentStackNavigatorParamsList, STUDENTS.CLASS_SETS>,
+    CompositeScreenProps<NativeStackScreenProps<IHomeStackNavigatorParamsList>, DrawerScreenProps<IHomeDrawerNavigatorParamsList>>
+  > {}
+
+const StudentClassScreen = ({ navigation, route }: Props) => {
   const { studentId } = route.params;
   const { state } = useTeacher();
 
@@ -34,7 +44,7 @@ const StudentClassScreen = ({ navigation, route }) => {
                   })
                 }>
                 <VStack spacing={5} style={{ flex: 1 }} alignment="leading">
-                  <Text numOfLines={2} style={StyleGuide.typography.gridItemHeader}>
+                  <Text numberOfLines={2} style={StyleGuide.typography.gridItemHeader}>
                     {item.name}
                   </Text>
 

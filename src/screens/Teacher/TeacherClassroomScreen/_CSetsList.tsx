@@ -1,20 +1,20 @@
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Animated, { Layout, ZoomIn, ZoomInRotate, ZoomOut } from 'react-native-reanimated';
 import { HStack, Spacer, VStack } from 'react-native-stacks';
 import { StyleGuide } from 'src/config';
 import { Image, HList } from 'components/base';
 import { AddButton } from 'components/custom';
-import { ITeacherCategory } from 'src/entities';
+import { Category } from 'src/entities';
 
 interface Props {
   showList: boolean;
   showEdit: boolean;
-  onEdit: (e: GestureResponderEvent) => void;
-  data: ITeacherCategory[];
+  onEdit: () => void;
+  data: Category[];
   showAdd: boolean;
-  onAdd: (e: GestureResponderEvent) => void;
-  onPressItem: (item: ITeacherCategory) => void;
+  onAdd: () => void;
+  onPressItem: (item: Category) => void;
 }
 
 const CustomSetsList = (props: Props) => {

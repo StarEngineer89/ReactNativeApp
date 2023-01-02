@@ -1,32 +1,14 @@
+import { StudentCategory } from './Category';
 import ClassRoom from './Classroom';
-
-export interface IStudentCategory {
-  _id: string;
-  name: string;
-  image: string;
-  predefined: boolean;
-  children: any[];
-  slug: string;
-  recorded: number;
-  total: number;
-}
-
-export interface IStudentRecording {
-  _id: string;
-  category: string;
-  classroom: string;
-  studentVoiceURL?: string;
-  predefined: boolean;
-  score: number;
-}
+import Recording from './Recording';
 
 interface Student {
   _id: string;
   account: string;
   name: string;
   image?: string;
-  categories: IStudentCategory[];
-  recordings: IStudentRecording[];
+  categories: StudentCategory[];
+  recordings: Recording[];
   uploading: boolean;
   classroom: ClassRoom;
 }

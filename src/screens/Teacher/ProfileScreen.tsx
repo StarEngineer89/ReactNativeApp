@@ -4,8 +4,19 @@ import { Button, Center, ContainerView } from 'components/base';
 import { ErrorModal, ProcessingModal, DeletingModal } from 'components/modals';
 import { useAuth, useDeviceInfo, useTeacher } from 'src/hooks';
 import { ImageUploader, LabelTextInput } from 'components/custom';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IHomeDrawerNavigatorParamsList, IProfileStackNavigatorParamsList } from 'src/navigations/_types';
+import { PROFILE } from 'src/constants/routes';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 
-const ProfileScreen = ({ navigation }) => {
+interface Props
+  extends CompositeScreenProps<
+    NativeStackScreenProps<IProfileStackNavigatorParamsList, PROFILE.MAIN>,
+    DrawerScreenProps<IHomeDrawerNavigatorParamsList>
+  > {}
+
+const ProfileScreen = ({ navigation }: Props) => {
   const { state, updateTeacher, clearError, setDrawerItem } = useTeacher();
   const { state: authState, deactivate } = useAuth();
 
@@ -24,7 +35,7 @@ const ProfileScreen = ({ navigation }) => {
     <>
       <DeletingModal
         show={showConfirm}
-        deleteTitle={'Deactivate'}
+        // deleteTitle={'Deactivate'}
         onCancel={() => setshowConfirm(false)}
         onDelete={() => {
           deactivate();
@@ -55,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
                   variant="filled"
                   title="Change Password"
                   size="lg"
-                  onPress={() => navigation.navigate('Change Password')}
+                  onPress={() => navigation.navigate(PROFILE.CHANGE_PASSWORD)}
                   style={{ marginHorizontal: 8 }}
                 />
               )}

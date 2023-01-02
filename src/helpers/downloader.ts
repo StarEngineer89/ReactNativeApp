@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import * as Crypto from 'expo-crypto';
-import { Recording } from 'src/entities';
+import { Category, Recording } from 'src/entities';
 
 const _digestUrl = async (_string: string) => {
   const digest = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, _string);
@@ -54,7 +54,7 @@ export const cacheNewVoice = async (category: Recording, oldVoice: string) => {
   });
 };
 
-export const cacheCategoryVoices = async (category: Recording[]) => {
+export const cacheCategoryVoices = async (category: Category[]) => {
   return new Promise(async (resolve, _) => {
     // removing null voices
     let voices = category.filter(voice => voice.voiceURL !== null);

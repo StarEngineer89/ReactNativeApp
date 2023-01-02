@@ -7,10 +7,18 @@ import { navigateBack, navigationRef } from 'src/refs';
 import actions from './_actionNames';
 import { IMentorDispatch } from './_types';
 import { Category } from 'src/entities';
+import {
+  IAddOrUpdateStudentResponse,
+  IGetTeacherCategoryResponse,
+  IGetTeacherProfileResponse,
+  IPostTeacherAddSetItemResponse,
+  IPostTeacherAddSetResponse,
+  IResponse,
+} from 'src/api/interfaces';
 
 const getProfile = (dispatch: IMentorDispatch) => async () => {
   try {
-    const response = await api.get('/api/teachers/me');
+    const response = await api.get<IGetTeacherProfileResponse>('/api/teachers/me');
     if (response.data.success) {
       dispatch({
         type: actions.GET_PROFILE_SUCCEEDED,
@@ -29,7 +37,7 @@ const getStudentClassroomCategory =
     dispatch({ type: actions.GETTING_STUDENT_CATEGORY });
 
     try {
-      const response = await api.post(`/api/students/${studentId}/classrooms/${classroomId}/category/${categoryId}`, {
+      const response = await api.post<IGetTeacherCategoryResponse>(`/api/students/${studentId}/classrooms/${classroomId}/category/${categoryId}`, {
         predefined,
         language: 'default',
       });
@@ -117,7 +125,7 @@ const rateVoice = (dispatch: IMentorDispatch) => async (studentId: string, child
 
 const addStudent = (dispatch: IMentorDispatch) => async () => {
   try {
-    const response = await api.post('/api/students');
+    const response = await api.post<IAddOrUpdateStudentResponse>('/api/students');
 
     if (response.data.success) {
       dispatch({
@@ -142,7 +150,7 @@ const addStudent = (dispatch: IMentorDispatch) => async () => {
 const editStudent = (dispatch: IMentorDispatch) => async (id: string, name: string, categories: Category[], image: string, isNewImage: boolean) => {
   dispatch({ type: actions.SAVING_STUDENT_STARTED });
   try {
-    const response = await api.put(`/api/students/${id}`, {
+    const response = await api.put<IAddOrUpdateStudentResponse>(`/api/students/${id}`, {
       name,
       categories,
     });
@@ -200,7 +208,7 @@ const clearState = (dispatch: IMentorDispatch) => () => {
 
 const getCategory = (dispatch: IMentorDispatch) => async (id: string, predefined: boolean) => {
   try {
-    const response = await api.get(`/api/teachers/me/category/${id}/${predefined}`);
+    const response = await api.get<IGetTeacherCategoryResponse>(`/api/teachers/me/category/${id}/${predefined}`);
 
     let payload: any = await cacheCategoryVoices(response.data.category);
 
@@ -237,7 +245,7 @@ const recordMentorVoice = (dispatch: IMentorDispatch) => async (catId: string, u
 
 const confirmTutorial = (dispatch: IMentorDispatch) => async (students: boolean, categories: boolean) => {
   try {
-    const response = await api.put('/api/teachers/me/tutorials', {
+    const response = await api.put<IResponse>('/api/teachers/me/tutorials', {
       students,
       categories,
     });
@@ -259,7 +267,7 @@ const setDrawerItem = (dispatch: IMentorDispatch) => (item: string) => {
 
 const addSet = (dispatch: IMentorDispatch) => async () => {
   try {
-    const response = await api.post('/api/teachers/me/category');
+    const response = await api.post<IPostTeacherAddSetResponse>('/api/teachers/me/category');
 
     if (response.data.success) {
       dispatch({ type: actions.CREATE_SET, payload: response.data.category });
@@ -280,7 +288,7 @@ const addSet = (dispatch: IMentorDispatch) => async () => {
 const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, image: string, isNewImage: boolean) => {
   dispatch({ type: actions.SAVING_SET_STARTED });
   try {
-    const response = await api.put(`/api/teachers/me/category/${id}`, {
+    const response = await api.put<IResponse>(`/api/teachers/me/category/${id}`, {
       name,
     });
     if (response.data.success) {
@@ -329,7 +337,7 @@ const editSet = (dispatch: IMentorDispatch) => async (id: string, name: string, 
 
 const addSetItem = (dispatch: IMentorDispatch) => async (id: string, image: string) => {
   try {
-    const response = await api.post(`/api/teachers/me/category/${id}`);
+    const response = await api.post<IPostTeacherAddSetItemResponse>(`/api/teachers/me/category/${id}`);
     if (response.data.success) {
       let newItem = response.data.categoryItem;
       dispatch({

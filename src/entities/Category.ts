@@ -3,13 +3,8 @@ interface Category {
   name: string;
   type: string;
   image: string;
-  parent: {
-    required: boolean;
-    default: any;
-  };
-  sortOrder: {
-    type: number;
-  };
+  parent: string;
+  sortOrder: number;
   predefined: boolean;
   slug: string;
   size: number;

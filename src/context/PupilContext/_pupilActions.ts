@@ -3,11 +3,12 @@ import actions from './_actionNames';
 import { cacheStudentCategoryVoices } from 'src/helpers/downloader';
 import { uploadToDirectory } from 'src/api/firebase';
 import { IPupilDispatch } from './_types';
+import { IGetStudentCategoryResponse, IGetStudentProfileResponse } from 'src/api/interfaces';
 
 const getProfile = (dispatch: IPupilDispatch) => async (id: string) => {
   dispatch({ type: actions.LOADING_STARTED });
   try {
-    const response = await api.get(`/api/students/${id}`);
+    const response = await api.get<IGetStudentProfileResponse>(`/api/students/${id}`);
     dispatch({ type: actions.GET_STUDENT, payload: response.data.student });
   } catch (error) {
     dispatch({ type: actions.ERROR });
@@ -20,7 +21,7 @@ const clearStudentState = (dispatch: IPupilDispatch) => () => {
 
 const getCategory = (dispatch: IPupilDispatch) => async (studentId: string, classroomId: string, categoryId: string, predefined: boolean) => {
   try {
-    const response = await api.post(`/api/students/${studentId}/classrooms/${classroomId}/category/${categoryId}`, {
+    const response = await api.post<IGetStudentCategoryResponse>(`/api/students/${studentId}/classrooms/${classroomId}/category/${categoryId}`, {
       predefined,
       language: 'default',
     });

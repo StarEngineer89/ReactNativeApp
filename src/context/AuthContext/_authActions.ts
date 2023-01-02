@@ -6,7 +6,7 @@ import { DrawerActions } from '@react-navigation/native';
 import { anonymousLogin, anonymousLogOut, checkFirebaseAuth } from 'src/api/firebase';
 import { AxiosError } from 'axios';
 import { IAuthDispatch } from './_types';
-import { ILoginResponse, IUpdatePasswordResponse } from 'src/api/interfaces';
+import { ILoginResponse, IResponse } from 'src/api/interfaces';
 
 const handleAuthError = (error: AxiosError) => {
   let payload = 'Network Error';
@@ -206,7 +206,7 @@ const changePassword = (dispatch: IAuthDispatch) => async (old: string, password
   dispatch({ type: actions.LOADING_STARTED });
 
   try {
-    const response = await api.put<IUpdatePasswordResponse>('/users/api/update-password', {
+    const response = await api.put<IResponse>('/users/api/update-password', {
       old,
       password,
     });

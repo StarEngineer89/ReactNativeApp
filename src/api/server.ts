@@ -19,31 +19,32 @@ instance.interceptors.request.use(
   },
 );
 
-instance.interceptors.request.use(
-  config => {
-    console.log('API: Sending request to the ', config.url, ' with data: ', config.data);
-    return config;
-  },
-  err => {
-    return Promise.reject(err);
-  },
-);
+// Logging interceptors
+// instance.interceptors.request.use(
+//   config => {
+//     console.log('API: Sending request to the ', config.url, ' with data: ', config.data);
+//     return config;
+//   },
+//   err => {
+//     return Promise.reject(err);
+//   },
+// );
 
-instance.interceptors.response.use(
-  config => {
-    console.log(
-      'API: Received response for the request to ',
-      config.config.url,
-      ' with status ',
-      config.status,
-      ' with data: ',
-      JSON.stringify(config.data),
-    );
-    return config;
-  },
-  err => {
-    return Promise.reject(err);
-  },
-);
+// instance.interceptors.response.use(
+//   config => {
+//     console.log(
+//       'API: Received response for the request to ',
+//       config.config.url,
+//       ' with status ',
+//       config.status,
+//       ' with data: ',
+//       JSON.stringify(config.data),
+//     );
+//     return config;
+//   },
+//   err => {
+//     return Promise.reject(err);
+//   },
+// );
 
 export default instance;

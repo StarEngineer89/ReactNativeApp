@@ -10,7 +10,7 @@ const ProfileNavigator = () => {
   return (
     <Navigator screenOptions={VScreenOptions}>
       <Screen name={PROFILE.MAIN} component={ProfileScreen} options={() => ({ headerRight: () => <HomeHeaderRight />, headerLeft: () => null })} />
-      <Screen name={PROFILE.MAIN} component={ChangePasswordScreen} />
+      <Screen name={PROFILE.CHANGE_PASSWORD} component={ChangePasswordScreen} />
     </Navigator>
   );
 };

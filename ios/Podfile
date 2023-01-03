@@ -13,8 +13,13 @@ target 'v2voca' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => podfile_properties['expo.jsEngine'] == 'hermes'
+
+    # Hermes takes a lot of space so temporarily setting to false
+    :hermes_enabled => false
   )
+
+  # I'm glad this line wasn't needed
+  # pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
 
   # Uncomment to opt-in to using Flipper
   #

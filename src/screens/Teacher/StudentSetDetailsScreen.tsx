@@ -8,12 +8,12 @@ import { ContainerView, GridList } from 'components/base';
 import { StyleGuide } from 'src/config';
 import { ProgressComponent, ErrorComponent } from 'components/main';
 import { Listen } from 'components/svgs';
-import { playSound } from 'src/functions';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, IStudentStackNavigatorParamsList } from 'src/navigations/_types';
 import { STUDENTS } from 'src/constants/routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { playSound } from 'src/helpers';
 
 interface Props
   extends CompositeScreenProps<

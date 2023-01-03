@@ -9,12 +9,12 @@ import { ProgressComponent } from 'components/main';
 import Animated, { Layout, SlideInLeft } from 'react-native-reanimated';
 import { StyleGuide } from 'src/config';
 import { Listen } from 'components/svgs';
-import { playSound } from 'src/functions';
 import { DeletingModal } from 'components/modals';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, ISetStackNavigatorParamsList } from 'src/navigations/_types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { playSound } from 'src/helpers';
 
 interface Props
   extends CompositeScreenProps<

@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 export const isTablet = () => {
@@ -13,28 +13,3 @@ export const isTablet = () => {
 export const isPad = () => {
   return Platform.OS === 'ios' && Platform.isPad;
 };
-
-import { Audio } from 'expo-av';
-import { Platform } from 'react-native';
-import { AVPlaybackSource } from 'expo-av/build/AV.types';
-
-export async function playSound(sound: AVPlaybackSource) {
-  await Audio.setAudioModeAsync({
-    allowsRecordingIOS: false,
-    playsInSilentModeIOS: true,
-    interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-    shouldDuckAndroid: true,
-    interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-    playThroughEarpieceAndroid: false,
-  });
-
-  Audio.Sound.createAsync(sound, { shouldPlay: true })
-    .then(res => {
-      res.sound.setOnPlaybackStatusUpdate(status => {
-        if (status.isLoaded && !status.didJustFinish) return;
-
-        res.sound.unloadAsync().catch(error => console.log('unloading error', error));
-      });
-    })
-    .catch(error => console.log('create async error', error));
-}

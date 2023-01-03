@@ -21,33 +21,3 @@ export const recordingSettings = {
     linearPCMIsFloat: false,
   },
 };
-
-export const playSoundUrl = async (voice: string) => {
-  try {
-    // Loading Sound
-
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-      playsInSilentModeIOS: true,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      shouldDuckAndroid: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-      playThroughEarpieceAndroid: false,
-    });
-
-    const { sound: playbackObject } = await Audio.Sound.createAsync({
-      uri: voice,
-    });
-
-    await playbackObject.playAsync();
-
-    // playing sound
-
-    // Don't forget to unload the sound from memory
-    // when you are done using the Sound object
-    // await playbackObject.unloadAsync();
-  } catch (error) {
-    // An error occurred!
-    // console.log(error);
-  }
-};

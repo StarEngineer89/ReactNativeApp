@@ -1,5 +1,6 @@
 import { Animated } from 'react-native';
 import { Audio } from 'expo-av';
+import { AVPlaybackSource } from 'expo-av/build/AV.types';
 
 export const recordingSettings = {
   android: {
@@ -43,7 +44,9 @@ export const animation = (
     useNativeDriver: true,
   });
 
-export async function playSound(sound: string, setPlaying: () => void) {
+export async function playSound(sound: string | AVPlaybackSource, onEnd?: () => void) {
+  console.log(sound);
+
   await Audio.setAudioModeAsync({
     allowsRecordingIOS: false,
     playsInSilentModeIOS: true,
@@ -53,16 +56,23 @@ export async function playSound(sound: string, setPlaying: () => void) {
     playThroughEarpieceAndroid: false,
   });
 
-  Audio.Sound.createAsync({ uri: sound }, { shouldPlay: true })
+  Audio.Sound.createAsync(typeof sound === 'string' ? { uri: sound } : sound, { shouldPlay: true })
     .then(res => {
       res.sound.setOnPlaybackStatusUpdate(status => {
-        if (status.isLoaded && !status.didJustFinish) return;
-        setPlaying();
-        res.sound.unloadAsync().catch(error => console.log('unloading error', error));
+        if (!status.isLoaded) {
+          return;
+        }
+
+        if (status.didJustFinish) {
+          console.log('Calling unload');
+          onEnd && onEnd();
+          res.sound.unloadAsync().catch(error => console.log('unloading error', error));
+        }
       });
     })
-    .catch(() => {
-      setPlaying();
+    .catch(e => {
+      console.log(e);
+      onEnd && onEnd();
       // console.log('create async error', error);
     });
 }

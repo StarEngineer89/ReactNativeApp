@@ -31,7 +31,7 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
       });
       // Starting recording...
 
-      const { recording } = await Audio.Recording.createAsync(recordingSettings as RecordingOptions);
+      const { recording } = await Audio.Recording.createAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       setRecording(recording);
       // Recording started..
     } catch (err) {

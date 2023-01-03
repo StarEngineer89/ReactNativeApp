@@ -14,7 +14,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 interface Props {
-  data: any; /// TODO: type this
+  data: any;
   attr: string;
   activeIndex: SharedValue<number>;
   onPress: () => void;

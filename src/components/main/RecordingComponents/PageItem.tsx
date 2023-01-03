@@ -9,7 +9,7 @@ const IMAGE_SIZE = isPad() ? 240 : 200;
 const IMAGE_BORDER = isPad() ? 35 : 25;
 
 interface Props {
-  category: any; // TODO: type this
+  category: any;
   translateX: SharedValue<number>;
   index: number;
 }

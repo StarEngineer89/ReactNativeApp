@@ -41,7 +41,6 @@ const _checkAndDownload = async (uri: string) => {
   return _tmp;
 };
 
-// TODO: type this
 export const cacheNewVoice = async (category: Recording, oldVoice: string) => {
   return new Promise(async (resolve, _) => {
     if (oldVoice != null) await _deleteCachedURI(oldVoice);

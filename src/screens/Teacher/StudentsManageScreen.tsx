@@ -12,8 +12,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, IStudentStackNavigatorParamsList } from 'src/navigations/_types';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 
-// TODO: Fix types
-
 interface Props
   extends CompositeScreenProps<
     NativeStackScreenProps<IStudentStackNavigatorParamsList, STUDENTS.MANAGE>,

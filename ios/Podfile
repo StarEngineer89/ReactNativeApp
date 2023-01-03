@@ -9,13 +9,14 @@ podfile_properties = JSON.parse(File.read('./Podfile.properties.json')) rescue {
 
 target 'v2voca' do
   use_expo_modules!
+  use_frameworks! :linkage => :static
   config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
 
     # Hermes takes a lot of space so temporarily setting to false
-    :hermes_enabled => false
+    :hermes_enabled => true
   )
 
   # I'm glad this line wasn't needed

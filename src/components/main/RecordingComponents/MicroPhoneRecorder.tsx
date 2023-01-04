@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
 import { Audio } from 'expo-av';
@@ -19,8 +19,20 @@ interface Props {
 }
 
 const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
+  const [isAllowedToRecord, setIsAllowedToRecord] = useState<boolean>(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const { width, height, isTablet, isLandscape } = useDeviceInfo();
+
+  useEffect(() => {
+    const init = async () => {
+      const status = await Audio.getPermissionsAsync();
+      if (status.granted) {
+        setIsAllowedToRecord(true);
+      }
+    };
+
+    init();
+  }, []);
 
   const _startRecording = async () => {
     try {
@@ -33,13 +45,14 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
 
   const _stopRecording = async () => {
     try {
-      // Stopping recording..
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
       onEnd();
-      onFinished(uri);
+      if (recording) {
+        await recording.stopAndUnloadAsync();
+        const uri = recording.getURI();
 
-      setRecording(undefined);
+        onFinished(uri);
+        setRecording(undefined);
+      }
     } catch (error) {
       throw error;
     }
@@ -50,8 +63,12 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
       const { status } = await Audio.requestPermissionsAsync();
 
       if (status === 'granted') {
-        onStart();
-        _startRecording();
+        setIsAllowedToRecord(true);
+
+        if (isAllowedToRecord) {
+          onStart();
+          _startRecording();
+        }
       } else {
         Alert.alert('Go to settings and enable recording');
       }

@@ -50,11 +50,7 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
   const onSpeakerPressed = useCallback(() => {
     if (state.currentCategory[activeIndex.value].voiceURL == null) return;
     lottieRef.current.play();
-    playSound(state.currentCategory[activeIndex.value].voiceURL, () => {
-      if (navigationRef.current.getCurrentRoute().name === STUDENT.CLASS_SET) {
-        lottieRef.current.reset();
-      }
-    });
+    playSound(state.currentCategory[activeIndex.value].voiceURL, () => lottieRef.current.reset());
   }, [state.currentCategory]);
 
   const onEndRecording = useCallback(uri => {
@@ -153,7 +149,7 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
             // backgroundColor: 'transparent',
           }}
           source={require('assets/lottie/lf30_editor_wfgykmvy.json')}
-          loop={false}
+          loop={true}
           resizeMode="contain"
           progress={0.00000001}
         />

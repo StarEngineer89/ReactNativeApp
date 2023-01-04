@@ -64,7 +64,6 @@ export async function playSound(sound: string | AVPlaybackSource, onEnd?: () => 
         }
 
         if (status.didJustFinish) {
-          console.log('Calling unload');
           onEnd && onEnd();
           res.sound.unloadAsync().catch(error => console.log('unloading error', error));
         }

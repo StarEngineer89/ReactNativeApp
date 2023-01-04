@@ -3,10 +3,9 @@ import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import Svg, { Path, G } from 'react-native-svg';
 import { Audio } from 'expo-av';
 import { useDeviceInfo } from 'src/hooks';
-import { recordingSettings } from 'src/audioHelper';
 import { palette } from 'src/config';
 import { isTablet } from 'src/functions';
-import { RecordingOptions } from 'expo-av/build/Audio';
+import { recordingSettings } from 'src/audioHelper';
 
 const SIZE_OUTER = isTablet() ? 120 : 80;
 const SIZE_INNER = isTablet() ? 90 : 60;
@@ -25,37 +24,29 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
 
   const _startRecording = async () => {
     try {
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
-      // Starting recording...
-
-      const { recording } = await Audio.Recording.createAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      const { recording } = await Audio.Recording.createAsync(recordingSettings);
       setRecording(recording);
-      // Recording started..
     } catch (err) {
-      // error
+      throw err;
     }
   };
 
   const _stopRecording = async () => {
     try {
       // Stopping recording..
-      onEnd();
-      setRecording(undefined);
-
       await recording.stopAndUnloadAsync();
       const uri = recording.getURI();
+      onEnd();
       onFinished(uri);
+
+      setRecording(undefined);
     } catch (error) {
-      // console.log(error);
+      throw error;
     }
   };
 
   const _checkPermissionAndRecord = async () => {
     try {
-      // await _stopRecording();
       const { status } = await Audio.requestPermissionsAsync();
 
       if (status === 'granted') {
@@ -65,7 +56,7 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
         Alert.alert('Go to settings and enable recording');
       }
     } catch (error) {
-      // error
+      console.log('Error occured while checking permission and recording: ', error);
     }
   };
 

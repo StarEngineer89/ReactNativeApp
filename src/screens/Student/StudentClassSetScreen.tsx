@@ -73,11 +73,7 @@ const StudentClassSetScreen = ({ route, navigation }: Props) => {
   const onTeacherSpeakerPressed = useCallback(() => {
     if (state.currentCategory.children[activeIndex.value].voiceURL == null) return;
     lottieRef.current.play();
-    playSound(state.currentCategory.children[activeIndex.value].voiceURL, () => {
-      if (navigationRef.current.getCurrentRoute().name === STUDENT.CLASS_SET) {
-        lottieRef.current.reset();
-      }
-    });
+    playSound(state.currentCategory.children[activeIndex.value].voiceURL, () => lottieRef.current.reset());
   }, [state.currentCategory]);
 
   const onNextPressed = useCallback(() => {

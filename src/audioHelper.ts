@@ -1,6 +1,7 @@
 import { Audio } from 'expo-av';
+import { RecordingOptions } from 'expo-av/build/Audio';
 
-export const recordingSettings = {
+export const recordingSettings: RecordingOptions = {
   android: {
     extension: '.m4a',
     outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
@@ -20,4 +21,5 @@ export const recordingSettings = {
     linearPCMIsBigEndian: false,
     linearPCMIsFloat: false,
   },
+  web: {},
 };

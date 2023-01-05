@@ -36,6 +36,11 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
 
   const _startRecording = async () => {
     try {
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
       const { recording } = await Audio.Recording.createAsync(recordingSettings);
       setRecording(recording);
     } catch (err) {
@@ -49,6 +54,11 @@ const MicroPhoneRecorder = ({ onStart, onEnd, onFinished }: Props) => {
       if (recording) {
         await recording.stopAndUnloadAsync();
         const uri = recording.getURI();
+
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          playsInSilentModeIOS: false,
+        });
 
         onFinished(uri);
         setRecording(undefined);

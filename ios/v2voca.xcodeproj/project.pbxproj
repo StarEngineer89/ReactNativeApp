@@ -364,7 +364,7 @@
 				CODE_SIGN_ENTITLEMENTS = v2voca/v2voca.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 6FCL3HRHMJ;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -379,7 +379,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.famak3z.ak3zsfmx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cognime.vocaloo;
 				PRODUCT_NAME = v2voca;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "v2voca/v2voca-Bridging-Header.h";
@@ -399,7 +399,7 @@
 				CODE_SIGN_ENTITLEMENTS = v2voca/v2voca.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 6FCL3HRHMJ;
 				INFOPLIST_FILE = v2voca/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -409,7 +409,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.famak3z.ak3zsfmx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cognime.vocaloo;
 				PRODUCT_NAME = v2voca;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "v2voca/v2voca-Bridging-Header.h";

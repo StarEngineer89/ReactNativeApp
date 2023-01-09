@@ -48,13 +48,13 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
   }, [isLandscape]);
 
   const onSpeakerPressed = useCallback(() => {
-    if (state.currentCategory[activeIndex.value].voiceURL == null) return;
+    if (state?.currentCategory[activeIndex.value]?.voiceURL == null) return;
     lottieRef.current.play();
-    playSound(state.currentCategory[activeIndex.value].voiceURL, () => lottieRef.current.reset());
-  }, [state.currentCategory]);
+    playSound(state?.currentCategory[activeIndex.value]?.voiceURL, () => lottieRef.current.reset());
+  }, [state?.currentCategory]);
 
   const onEndRecording = useCallback(uri => {
-    let item = state.currentCategory[activeIndex.value];
+    let item = state?.currentCategory[activeIndex.value];
 
     recordMentorVoice(item._id, uri, item.voiceURL, predefined);
   }, []);
@@ -89,7 +89,7 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
         style={{ flex: 1 }}
         onScroll={onScrollHandler}
         scrollEventThrottle={16}>
-        {state.currentCategory.map((category, index) => (
+        {state?.currentCategory?.map((category, index) => (
           <PageItem key={`std-cat-${index.toString()}`} category={category} translateX={translateX} index={index} />
         ))}
       </Animated.ScrollView>
@@ -97,11 +97,11 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
       {/* <SpeakerVolume /> */}
       <Arrow direction="left" activeIndex={activeIndex} stopIndex={0} onArrowPressed={onPrevPressed} />
 
-      <Arrow direction="right" activeIndex={activeIndex} stopIndex={state.currentCategory.length - 1} onArrowPressed={onNextPressed} />
+      <Arrow direction="right" activeIndex={activeIndex} stopIndex={state?.currentCategory?.length - 1} onArrowPressed={onNextPressed} />
 
       <View style={{ position: 'absolute', top: 120 }} pointerEvents="none">
         <TickerView translateX={translateX} tWidth={width} tHeight={50}>
-          {state.currentCategory.map(({ name }, index) => {
+          {state?.currentCategory?.map(({ name }, index) => {
             return (
               <View
                 key={`names-container-${index}`}
@@ -129,7 +129,7 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
         </TickerView>
       </View>
 
-      <SpeakerVolume data={state.currentCategory} activeIndex={activeIndex} attr={'voiceURL'} onPress={onSpeakerPressed} />
+      <SpeakerVolume data={state?.currentCategory} activeIndex={activeIndex} attr={'voiceURL'} onPress={onSpeakerPressed} />
 
       <MicroPhoneRecorder onStart={() => lottieRef.current.play()} onEnd={() => lottieRef.current.reset()} onFinished={onEndRecording} />
 

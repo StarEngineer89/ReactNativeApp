@@ -23,13 +23,11 @@ interface Props
   > {}
 
 const StudentDashboardScreen = ({ navigation }: Props) => {
-  const { state, getProfile } = useStudent();
-  const {
-    state: { authId },
-  } = useAuth();
+  const { getProfile } = useStudent();
+  const { state } = useAuth();
+  const { authId } = state;
 
   const [refreshing, setRefreshing] = useState(false);
-
   useEffect(() => {
     getProfile(authId);
   }, []);

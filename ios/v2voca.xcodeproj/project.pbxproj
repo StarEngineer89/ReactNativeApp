@@ -11,10 +11,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		88DF7038296ED56F000586B5 /* Pods_v2voca.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E19921F6E0F28F8E88FDCAD /* Pods_v2voca.framework */; };
 		AF247C3712844D239B156162 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE1B8AF52141768CCE38B7 /* noop-file.swift */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		EBE2B32F171F4DF5B07BE03C /* Pods_v2voca.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E19921F6E0F28F8E88FDCAD /* Pods_v2voca.framework */; };
 		EC7307242964157600DD4DA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC7307232964157600DD4DA2 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBE2B32F171F4DF5B07BE03C /* Pods_v2voca.framework in Frameworks */,
+				88DF7038296ED56F000586B5 /* Pods_v2voca.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +218,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -364,7 +364,7 @@
 				CODE_SIGN_ENTITLEMENTS = v2voca/v2voca.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 6FCL3HRHMJ;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -399,7 +399,7 @@
 				CODE_SIGN_ENTITLEMENTS = v2voca/v2voca.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 6FCL3HRHMJ;
 				INFOPLIST_FILE = v2voca/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

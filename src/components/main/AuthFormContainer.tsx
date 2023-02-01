@@ -1,12 +1,12 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { View, ViewProps, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { Spacer, VStack } from 'react-native-stacks';
 import { ContainerView, Logo } from 'components/base';
 import { AuthSocial } from 'components/custom';
 import { GOOGLE_IOS_IDENTIFIER, GOOGLE_ANDROID_IDENTIFIER, FACEBOOK_APP_ID } from '@env';
-import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import { useAuth } from 'src/hooks';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 interface AuthFormContainerProps extends ViewProps {
   children: JSX.Element | JSX.Element[];
@@ -16,8 +16,37 @@ interface AuthFormContainerProps extends ViewProps {
 const AuthFormContainer = (props: AuthFormContainerProps) => {
   const { socialLogin } = useAuth();
 
+  useEffect(() => {
+    // Initial configuration
+    GoogleSignin.configure({
+      webClientId: '391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com',
+      forceCodeForRefreshToken: true
+    });
+  }, []);
+
   async function signInWithGoogleAsync() {
     try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const userInfo = await GoogleSignin.signIn();
+      const { user } = userInfo;
+      console.log(user);
+      socialLogin(user.name, user.email, user.id, 'google', user.photo);
+    } catch (error) {
+      console.log('Message', JSON.stringify(error));
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        alert('User Cancelled the Login Flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signing In');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Play Services Not Available or Outdated');
+      } else {
+        alert(error.message);
+      }
+    }
+
+    /* try {
       const result = await Google.logInAsync({
         androidClientId: GOOGLE_ANDROID_IDENTIFIER,
         iosClientId: GOOGLE_IOS_IDENTIFIER,
@@ -34,7 +63,7 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
       }
     } catch (e) {
       return { error: true };
-    }
+    } */
   }
 
   async function logInFacebook() {

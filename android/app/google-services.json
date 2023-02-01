@@ -14,7 +14,47 @@
       },
       "oauth_client": [
         {
-          "client_id": "391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com",
+          "client_id": "391143990532-a048crdn7qqi4nuluc18t90v864e8pcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.famak3z.ak3zsfmx",
+            "certificate_hash": "bac685a2277938534437a0158b897d73bfe1a42a"
+          }
+        },
+        {
+          "client_id": "391143990532-is3rg984bis94hg5qrbvg1gdu5ocl0ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.famak3z.ak3zsfmx",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "391143990532-pitbrb1rk1042vh6vnliufcc7ea72qf4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.famak3z.ak3zsfmx",
+            "certificate_hash": "208fd6019bae4dc2738ce1003963283b97f9dc7a"
+          }
+        },
+        {
+          "client_id": "391143990532-pud2p82mvjiro9r8lvcaqq1i535g2dfk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.famak3z.ak3zsfmx",
+            "certificate_hash": "76556cc3af33b422270b9c22712fa599d2d1d464"
+          }
+        },
+        {
+          "client_id": "391143990532-vivjtfnfncl4q4u8dopcqiau6or302jc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.famak3z.ak3zsfmx",
+            "certificate_hash": "cefde1b18a980dea14a40f2f26340098e3a4c7ca"
+          }
+        },
+        {
+          "client_id": "391143990532-ed692l2kc5dmpmamfburksr64j6os5k1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -31,10 +71,10 @@
               "client_type": 3
             },
             {
-              "client_id": "391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com",
+              "client_id": "391143990532-32sq5n3i207pus7dpbsb74betv0e2uil.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.famak3z.ak3zsfmx"
+                "bundle_id": "com.cognime.vocaloo"
               }
             }
           ]

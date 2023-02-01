@@ -2044,6 +2044,11 @@
     "@expo/config-plugins" "^5.0.4"
     stacktrace-js "^2.0.0"
 
+"@react-native-firebase/storage@^16.5.0":
+  version "16.7.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-16.7.0.tgz#109c03dfd7240e6bdea871f631fca2784369eec9"
+  integrity sha512-IvGBmo/caNwJiqRA3bsypfiCOJdb6hqF5qBVyKHIPJ/v2XAgASCcCH/OF8oJ+mFNpQioVRLJ+PRCfiSD5jVJXw==
+
 "@react-native-google-signin/google-signin@^9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-9.0.2.tgz#fd9d0cbb58591265c2ea9404b2d2ea7e514b9ea9"
@@ -3733,7 +3738,7 @@ find-up@^5.0.0, find-up@~5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
-firebase@^9.6.3:
+firebase@^9.16.0:
   version "9.16.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.16.0.tgz#f9b7f07bf67ff5d1e7e925d502b9ac02133058e6"
   integrity sha512-nNLpDwJvfP3crRc6AjnHH46TAkFzk8zimNVMJfYRCwAf5amOSGyU8duuc3IsJF6dQGiYLSfzfr2tMCsQa+rhKQ==

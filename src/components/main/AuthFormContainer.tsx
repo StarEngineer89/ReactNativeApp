@@ -20,15 +20,16 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
     // Initial configuration
     GoogleSignin.configure({
       webClientId: '391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com',
-      forceCodeForRefreshToken: true
+      forceCodeForRefreshToken: true,
+      //iosClientId: '391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com',
     });
   }, []);
 
   async function signInWithGoogleAsync() {
     try {
-      await GoogleSignin.hasPlayServices({
+      /* await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
-      });
+      }); */
       const userInfo = await GoogleSignin.signIn();
       const { user } = userInfo;
       console.log(user);
@@ -87,7 +88,7 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
         // type === 'cancel'
       }
     } catch ({ message }) {
-      // console.log(`Facebook Login Error: ${message}`);
+      console.log(`Facebook Login Error: ${message}`);
     }
   }
 

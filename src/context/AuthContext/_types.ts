@@ -4,6 +4,10 @@ import { User } from 'src/entities';
 import actions from './_actionNames';
 
 export interface IAuthState {
+  [x: string]: JSX.Element;
+  image: string;
+  name: string;
+  _id: any;
   authId: string;
   authType: number;
   accountType: 'email';

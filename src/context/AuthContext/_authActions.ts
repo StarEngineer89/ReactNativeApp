@@ -7,6 +7,7 @@ import { anonymousLogin, anonymousLogOut, checkFirebaseAuth } from 'src/api/fire
 import { AxiosError } from 'axios';
 import { IAuthDispatch } from './_types';
 import { ILoginResponse, IResponse } from 'src/api/interfaces';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const handleAuthError = (error: AxiosError) => {
   let payload = 'Network Error';
@@ -141,6 +142,12 @@ const autoSignIn = (dispatch: IAuthDispatch) => async () => {
 };
 
 const signout = (dispatch: IAuthDispatch) => async () => {
+  GoogleSignin.isSignedIn().then(async(isSignedIn)=>{
+    if (isSignedIn) {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    }
+  })
   await AsyncStorage.removeItem('TOKEN');
 
   await anonymousLogOut();

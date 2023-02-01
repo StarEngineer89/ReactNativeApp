@@ -5,6 +5,7 @@ import { firebaseConfig } from 'src/config';
 import { Auth, getAuth, signInAnonymously, onAuthStateChanged, signOut, initializeAuth } from 'firebase/auth';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from '@react-native-firebase/storage';
 
 /**
  * NOTE>>>>>>>>>>>>>>>>>>>>>>>>>> The package "firebase" was already added to the app and was coupled
@@ -14,17 +15,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let fb: FirebaseApp;
 let auth: Auth;
-let storage: FirebaseStorage;
+let storageFB: FirebaseStorage;
 if (getApps().length < 1) {
   fb = initializeApp(firebaseConfig);
   auth = initializeAuth(fb, {
     persistence: getReactNativePersistence(AsyncStorage),
   });
-  storage = getStorage(fb);
+  storageFB = getStorage(fb);
 } else {
   fb = getApp();
   auth = getAuth();
-  storage = getStorage(fb);
+  storageFB = getStorage(fb);
 }
 
 export const uploadToDirectory = async (directory: string, uri: string) => {
@@ -36,13 +37,15 @@ export const uploadToDirectory = async (directory: string, uri: string) => {
     const filename = uuid.v4();
 
     //the storage itself
-    const _ref = ref(storage, `${directory}/${filename}.${fileExtension}`); //how the image will be addressed inside the storage
-
+    const _ref = ref(storageFB, `${directory}/${filename}.${fileExtension}`); //how the image will be addressed inside the storage
+    
+    const reference = storage().ref(`${directory}/${filename}.${fileExtension}`);
     //convert image to array of bytes
-    const img = await fetch(uri);
-    const bytes = await img.blob();
-
-    await uploadBytes(_ref, bytes); //upload images
+    //const img = await fetch(uri);
+    //const bytes = await img.blob();
+    await reference.putFile(uri);
+    
+    //await uploadBytesResumable(_ref, bytes); //upload images
 
     const url = await getDownloadURL(_ref);
 

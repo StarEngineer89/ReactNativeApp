@@ -154,6 +154,7 @@ const editStudent = (dispatch: IMentorDispatch) => async (id: string, name: stri
       name,
       categories,
     });
+    console.log("===editStudent____response====",response)
     dispatch({
       type: actions.EDITING_STUDENT_SUCCEEDED,
       payload: response.data.student,
@@ -230,10 +231,12 @@ const recordMentorVoice = (dispatch: IMentorDispatch) => async (catId: string, u
 
     const voiceURL = await uploadToDirectory('voices', uri);
 
-    await api.put(`/api/teachers/me/record/${catId}`, {
+    const uploadresult = await api.put(`/api/teachers/me/record/${catId}`, {
       voiceURL,
       predefined,
     });
+
+    console.warn(uploadresult);
 
     // const payload = await cacheNewVoice(response.data.record, oldVoice);
 

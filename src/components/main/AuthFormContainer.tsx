@@ -1,9 +1,9 @@
-import React,{useState, useEffect} from 'react';
+import React,{useEffect} from 'react';
 import { View, ViewProps, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { Spacer, VStack } from 'react-native-stacks';
 import { ContainerView, Logo } from 'components/base';
 import { AuthSocial } from 'components/custom';
-import { GOOGLE_IOS_IDENTIFIER, GOOGLE_ANDROID_IDENTIFIER, FACEBOOK_APP_ID } from '@env';
+import { FACEBOOK_APP_ID,WEB_CIENT_ID} from '@env';
 import * as Facebook from 'expo-facebook';
 import { useAuth } from 'src/hooks';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
@@ -19,7 +19,7 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
   useEffect(() => {
     // Initial configuration
     GoogleSignin.configure({
-      webClientId: '391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com',
+      webClientId: WEB_CIENT_ID,
       forceCodeForRefreshToken: true,
       //iosClientId: '391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com',
     });

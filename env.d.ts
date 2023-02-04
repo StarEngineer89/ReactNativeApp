@@ -10,4 +10,5 @@ declare module "@env" {
   export const GOOGLE_IOS_IDENTIFIER: string;
   export const GOOGLE_ANDROID_IDENTIFIER: string;
   export const FACEBOOK_APP_ID: string;
+  export const WEB_CIENT_ID: string;
 }

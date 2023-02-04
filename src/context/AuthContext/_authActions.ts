@@ -75,6 +75,7 @@ const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: str
     });
 
     await AsyncStorage.setItem('TOKEN', response.data.token);
+    
     await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
     await anonymousLogin();

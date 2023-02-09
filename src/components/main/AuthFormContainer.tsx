@@ -4,9 +4,16 @@ import { Spacer, VStack } from 'react-native-stacks';
 import { ContainerView, Logo } from 'components/base';
 import { AuthSocial } from 'components/custom';
 import { FACEBOOK_APP_ID,WEB_CIENT_ID} from '@env';
-import * as Facebook from 'expo-facebook';
+//import * as Facebook from 'expo-facebook';
 import { useAuth } from 'src/hooks';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { Settings } from 'react-native-fbsdk-next';
+import { LoginManager } from "react-native-fbsdk-next";
+import { Profile } from "react-native-fbsdk-next";
+
+Settings.setAppID(FACEBOOK_APP_ID);
+Settings.initializeSDK();
+
 
 interface AuthFormContainerProps extends ViewProps {
   children: JSX.Element | JSX.Element[];
@@ -67,30 +74,70 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
     } */
   }
 
-  async function logInFacebook() {
-    try {
-      await Facebook.initializeAsync({
-        appId: FACEBOOK_APP_ID,
-      });
-      const result: Facebook.FacebookLoginResult = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['email', 'user_photos', 'public_profile'],
-      });
-      if (result.type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${result.token}`);
-        const res = await response.json();
+  async function logInFacebook()
+  {
+    LoginManager.logInWithPermissions(["public_profile"]).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log("Login cancelled");
+        } else {
+          console.log(
+            "Login success with permissions: " +
+              result.grantedPermissions.toString()
+              
+          );
+          const currentProfile = Profile.getCurrentProfile().then(
+            function(currentProfile) {
+              if (currentProfile) {
+                  const user =  currentProfile;
+                  try {
+                socialLogin(user.name, `fb${user.email}`, user.userID, 'facebook', user.imageURL);
+                  }
+                  catch(error){
 
-        const respone2 = await fetch(`https://graph.facebook.com/${res.id}?fields=id,name,email,picture&access_token=${result.token}`);
+                  }
 
-        const user = await respone2.json();
-        socialLogin(user.name, user.email, user.id, 'facebook', user.picture.data.url);
-      } else {
-        // type === 'cancel'
+                console.log("The current logged user is: " +
+                  currentProfile.name
+                  + ". His profile id is: " +
+                  currentProfile.userID
+                );
+              }
+            }
+          );
+          console.log("DATA===",currentProfile)
+        }
+      },
+      function(error) {
+        console.log("Login fail with error: " + error);
       }
-    } catch ({ message }) {
-      console.log(`Facebook Login Error: ${message}`);
-    }
+    );
   }
+
+  // async function logInFacebook() {
+  //   try {
+  //     await Facebook.initializeAsync({
+  //       appId: FACEBOOK_APP_ID,
+  //     });
+  //     const result: Facebook.FacebookLoginResult = await Facebook.logInWithReadPermissionsAsync({
+  //       permissions: ['email', 'user_photos', 'public_profile'],
+  //     });
+  //     if (result.type === 'success') {
+  //       // Get the user's name using Facebook's Graph API
+  //       const response = await fetch(`https://graph.facebook.com/me?access_token=${result.token}`);
+  //       const res = await response.json();
+
+  //       const respone2 = await fetch(`https://graph.facebook.com/${res.id}?fields=id,name,email,picture&access_token=${result.token}`);
+
+  //       const user = await respone2.json();
+  //       socialLogin(user.name, user.email, user.id, 'facebook', user.picture.data.url);
+  //     } else {
+  //       // type === 'cancel'
+  //     }
+  //   } catch ({ message }) {
+  //     console.log(`Facebook Login Error: ${message}`);
+  //   }
+  // }
 
   return (
     <ContainerView header={false}>

@@ -51,6 +51,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>1174421439966155</string>
+	<key>FacebookClientToken</key>
+	<string>4a53c11adcd24030f9dc3e370c8a4829</string>
 	<key>FacebookDisplayName</key>
 	<string>Vocaloo</string>
 	<key>LSApplicationQueriesSchemes</key>

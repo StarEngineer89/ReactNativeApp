@@ -8,6 +8,7 @@ import { AxiosError } from 'axios';
 import { IAuthDispatch } from './_types';
 import { ILoginResponse, IResponse } from 'src/api/interfaces';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { LoginManager } from "react-native-fbsdk-next";
 
 const handleAuthError = (error: AxiosError) => {
   let payload = 'Network Error';
@@ -65,6 +66,8 @@ const signup = (dispatch: IAuthDispatch) => async (name: string, email: string, 
 const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: string, social: string, type: string, image: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
+  console.log("API URL======/users/api/social-login"+"/"+name+"/"+email+"/"+social+"/"+type+"/"+image)
+
   try {
     const response = await api.post('/users/api/social-login', {
       name,
@@ -80,6 +83,10 @@ const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: str
 
     await anonymousLogin();
     dispatch({ type: actions.LOGIN_SUCCEEDED });
+    console.log("RESPONSE=====",JSON.stringify(response.data))
+
+
+
   } catch (error) {
     dispatch({ type: actions.AUTH_ERROR, payload: handleAuthError(error) });
   }
@@ -143,12 +150,14 @@ const autoSignIn = (dispatch: IAuthDispatch) => async () => {
 };
 
 const signout = (dispatch: IAuthDispatch) => async () => {
-  GoogleSignin.isSignedIn().then(async(isSignedIn)=>{
+  /* GoogleSignin.isSignedIn().then(async(isSignedIn)=>{
     if (isSignedIn) {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
     }
   })
+
+  LoginManager.logOut() */
   await AsyncStorage.removeItem('TOKEN');
 
   await anonymousLogOut();
@@ -160,7 +169,7 @@ const getProfiles = (dispatch: IAuthDispatch) => async () => {
 
   try {
     const response = await api.get<ILoginResponse>('/users/api/me');
-
+console.log("GETPROFILE=====",JSON.stringify(response.data))
     if (response.data.success) {
       setTimeout(() => {
         dispatch({

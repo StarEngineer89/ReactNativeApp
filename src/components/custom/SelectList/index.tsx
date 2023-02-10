@@ -31,7 +31,8 @@ const SelectList = ({ data, selected, setSelected, navigateBack, navigation }: P
             });
             setTimeout(() => navigateBack(array), 500);
           }}
-          style={{ color: palette.primary, fontSize: isTablet() ? 18 : 14 }}>
+          style={{ color: palette.primary, fontSize: isTablet() ? 18 : 14, paddingRight: 22 }}
+          >
           Done
         </Text>
       </TouchableOpacity>

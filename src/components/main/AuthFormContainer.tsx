@@ -91,7 +91,7 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
               if (currentProfile) {
                   const user =  currentProfile;
                   try {
-                socialLogin(user.name, `fb${user.email}`, user.userID, 'facebook', user.imageURL);
+                socialLogin(user.name, user.email, user.userID, 'facebook', user.imageURL);
                   }
                   catch(error){
 

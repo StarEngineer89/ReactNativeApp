@@ -7,6 +7,45 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:391143990532:android:c3772415b214660f2f5c51",
+        "android_client_info": {
+          "package_name": "com.cognime.vocaloo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391143990532-ed692l2kc5dmpmamfburksr64j6os5k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPe0KF4IY7NhiISMPRE6UnGm48fTFMF60"
+        },
+        {
+          "current_key": "AIzaSyASu1CthgU4J2TfJkQNUqGwzZLdDGY0wb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391143990532-66srh5cruh4e19ibsabf5e25eqgpqubf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "391143990532-32sq5n3i207pus7dpbsb74betv0e2uil.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cognime.vocaloo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:391143990532:android:533a567db6a2f0a82f5c51",
         "android_client_info": {
           "package_name": "com.famak3z.ak3zsfmx"
@@ -59,6 +98,9 @@
         }
       ],
       "api_key": [
+        {
+          "current_key": "AIzaSyDPe0KF4IY7NhiISMPRE6UnGm48fTFMF60"
+        },
         {
           "current_key": "AIzaSyASu1CthgU4J2TfJkQNUqGwzZLdDGY0wb4"
         }

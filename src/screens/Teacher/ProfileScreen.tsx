@@ -71,7 +71,7 @@ const ProfileScreen = ({ navigation }: Props) => {
                 />
               )}
 
-              <Button variant="danger" title="Deactivate Account" size="lg" onPress={() => setshowConfirm(true)} style={{ marginHorizontal: 8 }} />
+              <Button variant="danger" title="Delete Account" size="lg" onPress={() => setshowConfirm(true)} style={{ marginHorizontal: 8 }} />
             </HStack>
             <Spacer />
           </VStack>

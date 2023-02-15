@@ -135,10 +135,10 @@ android {
 
     defaultConfig {
         manifestPlaceholders = [appAuthRedirectScheme: 'dev.expo.app']
-        applicationId 'com.famak3z.ak3zsfmx'
+        applicationId 'com.cognime.vocaloo'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 4
         versionName "1.0.0"
     }
     splits {

@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TouchableOpacityProps, Platform } from 'react-native';
 import { HStack, Spacer, VStack } from 'react-native-stacks';
 import GoogleButton from './__SVG__/GoogleButton';
 import { isTablet } from 'src/functions';
 import { fonts, palette } from 'src/config';
 import FacebookButton from './__SVG__/FacebookButton';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 interface SocialButtonProps extends TouchableOpacityProps {
   type?: 'google' | 'facebook' | 'apple';
@@ -28,10 +29,12 @@ const AuthSocial = ({
   dividerText,
   onPressGoogle,
   onPressFacebook,
+  onPressApple
 }: {
   dividerText: string;
   onPressGoogle: () => void;
   onPressFacebook: () => void;
+  onPressApple: () => void;
 }) => {
   return (
     <VStack style={styles.authFooterContainer} spacing={SPACING}>
@@ -46,6 +49,17 @@ const AuthSocial = ({
         <Spacer />
         <SocialButton onPress={onPressGoogle} />
         <SocialButton type="facebook" onPress={onPressFacebook} />
+        {Platform.OS === "ios" ?
+          <AppleButton
+            buttonStyle={AppleButton.Style.WHITE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              width: 110, // You must specify a width
+              height: 32, // You must specify a height
+            }}
+            onPress={() => onPressApple()}
+          /> : null
+        }
         <Spacer />
       </HStack>
     </VStack>

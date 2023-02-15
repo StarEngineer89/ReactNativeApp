@@ -7,15 +7,14 @@ import { FACEBOOK_APP_ID, WEB_CIENT_ID } from '@env';
 import { useAuth } from 'src/hooks';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Settings } from 'react-native-fbsdk-next';
-import { LoginManager } from "react-native-fbsdk-next";
-import { Profile } from "react-native-fbsdk-next";
+import { LoginManager } from 'react-native-fbsdk-next';
+import { Profile } from 'react-native-fbsdk-next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import appleAuth, {
-} from "@invertase/react-native-apple-authentication";
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 Settings.setAppID(FACEBOOK_APP_ID);
 Settings.initializeSDK();
-
 
 interface AuthFormContainerProps extends ViewProps {
   children: JSX.Element | JSX.Element[];
@@ -31,6 +30,12 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
       webClientId: WEB_CIENT_ID,
       forceCodeForRefreshToken: true,
       //iosClientId: '391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com',
+    });
+
+    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn('If this function executes, User Credentials have been Revoked');
+      console.log('APPLE CREDENTIALS REVOKED');
     });
   }, []);
 
@@ -66,61 +71,66 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
     });
 
     const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-    console.log("APPLE USER", appleAuthRequestResponse);
+    console.log('APPLE USER', appleAuthRequestResponse);
     if (credentialState === appleAuth.State.AUTHORIZED) {
       // user is authenticated
-      console.log("APPLE STATUS", credentialState);
-      const {
-        email,
-        identityToken,
-        fullName
-      } = appleAuthRequestResponse;
-      const name = fullName.givenName ? fullName.givenName : fullName.middleName ? fullName.middleName : fullName.familyName ? fullName.familyName : fullName.nickname ? fullName.nickname : "AppleLogin"
-      socialLogin(name, email, identityToken, 'apple', "");
+      console.log('APPLE STATUS', credentialState);
+      const { email, identityToken, fullName } = appleAuthRequestResponse;
 
+      if (email) {
+        const name = fullName.givenName
+          ? fullName.givenName
+          : fullName.middleName
+          ? fullName.middleName
+          : fullName.familyName
+          ? fullName.familyName
+          : fullName.nickname
+          ? fullName.nickname
+          : 'AppleLogin';
+        await AsyncStorage.setItem('APPLELOGIN', JSON.stringify(appleAuthRequestResponse));
+        socialLogin(name, email, identityToken, 'apple', '');
+      } else {
+        const getUser = await AsyncStorage.getItem('APPLELOGIN');
+        const { email, identityToken, fullName } = JSON.parse(getUser);
+        const name = fullName.givenName
+          ? fullName.givenName
+          : fullName.middleName
+          ? fullName.middleName
+          : fullName.familyName
+          ? fullName.familyName
+          : fullName.nickname
+          ? fullName.nickname
+          : 'AppleLogin';
+        socialLogin(name, email, identityToken, 'apple', '');
+      }
     }
-
   };
 
   async function logInFacebook() {
-    LoginManager.logInWithPermissions(["public_profile"]).then(
+    LoginManager.logInWithPermissions(['public_profile']).then(
       function (result) {
         if (result.isCancelled) {
-          console.log("Login cancelled");
+          console.log('Login cancelled');
         } else {
-          console.log(
-            "Login success with permissions: " +
-            result.grantedPermissions.toString()
+          console.log('Login success with permissions: ' + result.grantedPermissions.toString());
+          const currentProfile = Profile.getCurrentProfile().then(function (currentProfile) {
+            if (currentProfile) {
+              const user = currentProfile;
+              try {
+                socialLogin(user.name, user.email, user.userID, 'facebook', user.imageURL);
+              } catch (error) {}
 
-          );
-          const currentProfile = Profile.getCurrentProfile().then(
-            function (currentProfile) {
-              if (currentProfile) {
-                const user = currentProfile;
-                try {
-                  socialLogin(user.name, user.email, user.userID, 'facebook', user.imageURL);
-                }
-                catch (error) {
-
-                }
-
-                console.log("The current logged user is: " +
-                  currentProfile.name
-                  + ". His profile id is: " +
-                  currentProfile.userID
-                );
-              }
+              console.log('The current logged user is: ' + currentProfile.name + '. His profile id is: ' + currentProfile.userID);
             }
-          );
-          console.log("DATA===", currentProfile)
+          });
+          console.log('DATA===', currentProfile);
         }
       },
       function (error) {
-        console.log("Login fail with error: " + error);
-      }
+        console.log('Login fail with error: ' + error);
+      },
     );
   }
-
 
   return (
     <ContainerView header={false}>

@@ -133,12 +133,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        jniLibs.useLegacyPackaging = true
+    }
+
     defaultConfig {
         manifestPlaceholders = [appAuthRedirectScheme: 'dev.expo.app']
         applicationId 'com.cognime.vocaloo'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
+        versionCode 5
         versionName "1.0.0"
     }
     splits {

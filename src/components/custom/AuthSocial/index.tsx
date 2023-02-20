@@ -7,6 +7,7 @@ import { fonts, palette } from 'src/config';
 import FacebookButton from './__SVG__/FacebookButton';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 
+
 interface SocialButtonProps extends TouchableOpacityProps {
   type?: 'google' | 'facebook' | 'apple';
 }
@@ -24,6 +25,8 @@ const SocialButton = ({ type = 'google', ...props }: SocialButtonProps) => {
 
 const DIVIDER_TEXT_FONT = isTablet() ? 18 : 12;
 const SPACING = isTablet() ? 16 : 8;
+
+console.log("Platform",Platform.OS);
 
 const AuthSocial = ({
   dividerText,
@@ -54,8 +57,8 @@ const AuthSocial = ({
             buttonStyle={AppleButton.Style.WHITE}
             buttonType={AppleButton.Type.SIGN_IN}
             style={{
-              width: 110, // You must specify a width
-              height: 32, // You must specify a height
+              width: isTablet() ? 183 : 110,
+              height: isTablet() ? 57 : 30
             }}
             onPress={() => onPressApple()}
           /> : null

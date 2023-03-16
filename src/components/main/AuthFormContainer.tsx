@@ -7,11 +7,8 @@ import { FACEBOOK_APP_ID, WEB_CIENT_ID } from '@env';
 import { useAuth } from 'src/hooks';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Settings } from 'react-native-fbsdk-next';
-import { LoginManager } from 'react-native-fbsdk-next';
-import { Profile } from 'react-native-fbsdk-next';
+import { LoginManager, AccessToken, } from 'react-native-fbsdk-next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import appleAuth from '@invertase/react-native-apple-authentication';
 
 Settings.setAppID(FACEBOOK_APP_ID);
 Settings.initializeSDK();
@@ -31,12 +28,14 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
       forceCodeForRefreshToken: true,
       //iosClientId: '391143990532-9c7lidvpr85pv70mq63u3rg4e3flqffr.apps.googleusercontent.com',
     });
-
-    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
-    return appleAuth.onCredentialRevoked(async () => {
-      console.warn('If this function executes, User Credentials have been Revoked');
-      console.log('APPLE CREDENTIALS REVOKED');
-    });
+    if(Platform.OS === 'ios'){
+      const {appleAuth} = require('@invertase/react-native-apple-authentication');
+      // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+      return appleAuth.onCredentialRevoked(async () => {
+        console.warn('If this function executes, User Credentials have been Revoked');
+        console.log('APPLE CREDENTIALS REVOKED');
+      });
+    }
   }, []);
 
   async function signInWithGoogleAsync() {
@@ -65,6 +64,7 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
    * CallBack function for the button.
    */
   const logInApple = async () => {
+    const {appleAuth} = require('@invertase/react-native-apple-authentication');
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: appleAuth.Operation.LOGIN,
       requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
@@ -106,24 +106,31 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
     }
   };
 
+  const initUser = (token: any) => {
+    fetch('https://graph.facebook.com/v2.5/me?fields=email,first_name,last_name,friends,picture&access_token=' + token)
+      .then((response) => {
+        response.json().then((json) => {
+          socialLogin(json.first_name, json.email, json.id, 'facebook', json.picture.data.url);
+        });
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM FACEBOOK');
+      });
+  };
+
   async function logInFacebook() {
-    LoginManager.logInWithPermissions(['public_profile']).then(
+    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       function (result) {
         if (result.isCancelled) {
           console.log('Login cancelled');
         } else {
-          console.log('Login success with permissions: ' + result.grantedPermissions.toString());
-          const currentProfile = Profile.getCurrentProfile().then(function (currentProfile) {
-            if (currentProfile) {
-              const user = currentProfile;
-              try {
-                socialLogin(user.name, user.email, user.userID, 'facebook', user.imageURL);
-              } catch (error) {}
-
-              console.log('The current logged user is: ' + currentProfile.name + '. His profile id is: ' + currentProfile.userID);
+          AccessToken.getCurrentAccessToken().then(
+            async (data) => {
+              console.log('FB Token', data);
+              const { accessToken } = data;
+              initUser(accessToken);
             }
-          });
-          console.log('DATA===', currentProfile);
+          );
         }
       },
       function (error) {

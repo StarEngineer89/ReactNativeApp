@@ -66,7 +66,7 @@ const signup = (dispatch: IAuthDispatch) => async (name: string, email: string, 
 const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: string, social: string, type: string, image: string) => {
   dispatch({ type: actions.LOADING_STARTED });
 
-  console.log("API URL======/users/api/social-login"+"/"+name+"/"+email+"/"+social+"/"+type+"/"+image)
+  console.log("API URL======/users/api/social-login" + "/" + name + "/" + email + "/" + social + "/" + type + "/" + image);
 
   try {
     const response = await api.post('/users/api/social-login', {
@@ -78,15 +78,12 @@ const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: str
     });
 
     await AsyncStorage.setItem('TOKEN', response.data.token);
-    
+
     await AsyncStorage.setItem('APP_VERSION', 'MVP@V2_2');
 
     await anonymousLogin();
     dispatch({ type: actions.LOGIN_SUCCEEDED });
-    console.log("RESPONSE=====",JSON.stringify(response.data))
-
-
-
+    console.log("RESPONSE=====", JSON.stringify(response.data));
   } catch (error) {
     dispatch({ type: actions.AUTH_ERROR, payload: handleAuthError(error) });
   }
@@ -164,12 +161,32 @@ const signout = (dispatch: IAuthDispatch) => async () => {
   dispatch({ type: actions.SIGN_OUT });
 };
 
+const updateProfile = (dispatch: IAuthDispatch) => async (profileId: string, type: number, interest: any) => {
+  try {
+    const response = await api.post<ILoginResponse>('/users/api/update-profile', { profileId, type, interest });
+    if (response.data.success) {
+      setTimeout(() => {
+        dispatch({
+          type: actions.UPDATE_PROFILES_SUCCEEDED,
+          payload: response.data,
+        });
+      }, 500);
+      return response.data.success;
+    } else {
+      dispatch({ type: actions.UPDATE_PROFILES_FAILED });
+    }
+  } catch (error) {
+    if (error.reponse && error.response.status === 401) {
+      console.log("updateProfileError", error);
+    }
+  }
+};
+
 const getProfiles = (dispatch: IAuthDispatch) => async () => {
   dispatch({ type: actions.GET_PROFILES_STARTED });
 
   try {
     const response = await api.get<ILoginResponse>('/users/api/me');
-console.log("GETPROFILE=====",JSON.stringify(response.data))
     if (response.data.success) {
       setTimeout(() => {
         dispatch({
@@ -194,7 +211,7 @@ console.log("GETPROFILE=====",JSON.stringify(response.data))
 const resendVerification = () => async () => {
   try {
     await api.put('/users/api/me/resend-verification');
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const completeOnBoarding = (dispatch: IAuthDispatch) => async () => {
@@ -202,7 +219,7 @@ const completeOnBoarding = (dispatch: IAuthDispatch) => async () => {
     await AsyncStorage.setItem('SHOW_TUTORIAL', '-1');
 
     dispatch({ type: actions.SET_ONBOARDING_STATUS, payload: false });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const clearError = (dispatch: IAuthDispatch) => () => {
@@ -215,9 +232,9 @@ const clearReset = (dispatch: IAuthDispatch) => () => {
 
 const selectProfile =
   (dispatch: IAuthDispatch) =>
-  ({ id, type }: { id: string; type: number }) => {
-    dispatch({ type: actions.SELECT_PROFILE, payload: { id, type } });
-  };
+    ({ id, type }: { id: string; type: number; }) => {
+      dispatch({ type: actions.SELECT_PROFILE, payload: { id, type } });
+    };
 
 const changePassword = (dispatch: IAuthDispatch) => async (old: string, password: string) => {
   dispatch({ type: actions.LOADING_STARTED });
@@ -268,6 +285,7 @@ const authActions = {
   autoSignIn,
   signout,
   getProfiles,
+  updateProfile,
   completeOnBoarding,
   clearError,
   selectProfile,

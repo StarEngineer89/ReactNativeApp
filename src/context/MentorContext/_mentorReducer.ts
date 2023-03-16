@@ -57,6 +57,7 @@ export const mentorReducer = (state: IMentorState, { type, payload }: IMentorRed
         ...state,
         profileInfo: payload.teacher,
         categories: payload.categories.filter(c => c.predefined === true),
+        interest: payload.interest.filter(c => c.predefined === true),
         customSets: payload.categories.filter(c => c.predefined === false),
         students: payload.students,
         news: payload.news,

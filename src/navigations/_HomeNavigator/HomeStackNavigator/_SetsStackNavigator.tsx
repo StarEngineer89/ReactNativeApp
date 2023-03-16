@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { VScreenOptions } from 'src/navigations/navHelpers';
 import { SETS } from 'src/constants/routes';
-import { SetsManageScreen, SetDetailsScreen, SetItemEditScreen, CustomSetsManageScreen, CustomSetEditScreen } from 'src/screens';
+import { SetsManageScreen, SetDetailsScreen, SetItemEditScreen, CustomSetsManageScreen, CustomSetEditScreen, IntermediateChooseInterest } from 'src/screens';
 import { ISetStackNavigatorParamsList } from 'src/navigations/_types';
 
 const SetsStackNavigator = () => {
@@ -13,6 +13,7 @@ const SetsStackNavigator = () => {
       <Stack.Screen name={SETS.MANAGE} component={SetsManageScreen} />
       <Stack.Screen name={SETS.MANAGE_CUSTOMS} component={CustomSetsManageScreen} />
       <Stack.Screen name={SETS.EDIT} component={CustomSetEditScreen} />
+      <Stack.Screen name={SETS.INTEREST} component={IntermediateChooseInterest} />
       <Stack.Screen
         name={SETS.EDIT_DETAILS}
         component={SetItemEditScreen}

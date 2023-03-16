@@ -14,3 +14,4 @@ export { default as GridListItem } from './GridListItem';
 export { default as MenuItem } from './MenuItem';
 export { default as LabelTextInput } from './LabelTextInput';
 export { default as CustomSetImageUploader } from './CustomSetImageUploader';
+export { default as SelectInterestList} from "./SelectInterestList";

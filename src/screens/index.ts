@@ -6,6 +6,8 @@ export { default as SignupScreen } from "./Auth/SignupScreen";
 export { default as LoginScreen } from "./Auth/LoginScreen";
 export { default as ResetPasswordScreen } from "./Auth/ResetPasswordScreen";
 export { default as SwitchUserScreen } from "./Auth/SwitchUserScreen";
+export { default as IntermediateChooseInterest } from "./Auth/IntermediateChooseInterest";
+import { default as MainNavigationSwitchUser } from "./Auth/MainNavigationSwitchUser";
 
 // Student's Screens
 export { default as StudentDashboardScreen } from "./Student/StudentDashboardScreen";

@@ -9,6 +9,9 @@ export type IAuthStackNavigatorParamsList = {
   [AUTH.SIGNUP]: undefined;
   [AUTH.SWITCH_USERS]: undefined;
   [AUTH.WELCOME]: undefined;
+  [AUTH.INTEREST]?: {
+    item: any;
+  };
 };
 
 export type IHomeTabNavigatorParamsList = {
@@ -32,6 +35,9 @@ export type ISetStackNavigatorParamsList = {
     itemIndex?: number;
     predefined?: boolean;
     length?: number;
+  };
+  [SETS.INTEREST]?: {
+    item: any;
   };
 };
 

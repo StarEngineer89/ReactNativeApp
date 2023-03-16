@@ -24,6 +24,7 @@ export interface IGetTeacherProfileResponse extends IResponse {
   profile: {
     teacher: Teacher;
     categories: Category[];
+    interest: Category[];
     students: Student[];
     news: News[];
     tutorials: {

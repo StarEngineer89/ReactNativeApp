@@ -5,6 +5,7 @@ export enum AUTH {
   LOGIN = 'Welcome Back',
   RESET = 'Reset Password',
   SWITCH_USERS = 'Switch Users',
+  INTEREST = 'Interest'
 };
 
 export enum STUDENTS {
@@ -29,11 +30,11 @@ export enum SETS {
   MANAGE = 'Manage Sets',
   MANAGE_CUSTOMS = 'Manage Custom Sets',
   ADD_ITEM = 'Add Item',
+  INTEREST = 'Interest'
 };
 
 export enum TABS {
   MAIN = 'TABS',
-
   CLASSROOM = 'CLASSROOM',
   NOTIFICATION = 'NOTIFICATION',
 };

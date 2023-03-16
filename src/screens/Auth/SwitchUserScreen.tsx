@@ -6,8 +6,13 @@ import { GridList, Center } from 'components/base';
 import { ContainerView, Image } from 'components/base';
 import { ProgressComponent, ErrorComponent } from 'components/main';
 import { StyleGuide } from 'src/config';
+import { AUTH } from "src/constants/routes";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IAuthStackNavigatorParamsList } from 'src/navigations/_types';
 
-const SwitchUserScreen = () => {
+interface Props extends NativeStackScreenProps<IAuthStackNavigatorParamsList, AUTH.SWITCH_USERS> { }
+
+const SwitchUserScreen = ({ navigation }: Props) => {
   const { state, getProfiles, selectProfile } = useAuth();
   const { clearState } = useTeacher();
   const { clearStudentState } = useStudent();
@@ -21,7 +26,7 @@ const SwitchUserScreen = () => {
     clearState();
     clearStudentState();
 
-    return () => {};
+    return () => { };
   }, []);
 
   return state.profiles.loading ? (
@@ -52,7 +57,17 @@ const SwitchUserScreen = () => {
               numOfColumns={{ mobile: 2 }}
               renderDetails={({ item, index }) => {
                 return (
-                  <Pressable key={`profile-grid-${index}`} onPress={() => _navigateByType(item._id, item.type)} style={{ marginHorizontal: 10 }}>
+                  <Pressable key={`profile-grid-${index}`} onPress={() => {
+                    if (item.type == 1) {
+                      if (item.interest.length > 0) {
+                        _navigateByType(item._id, item.type);
+                      } else {
+                        navigation.navigate(AUTH.INTEREST, { item: item });
+                      }
+                    } else {
+                      _navigateByType(item._id, item.type);
+                    }
+                  }} style={{ marginHorizontal: 10 }}>
                     <VStack spacing={5}>
                       <Image size="xl" uri={item.image} />
                       <Text style={[StyleGuide.typography.switchUser]}>{item.name}</Text>

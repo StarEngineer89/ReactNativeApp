@@ -5,6 +5,7 @@ import actions from './_actionNames';
 export interface IMentorState {
   profileInfo: Teacher;
   categories: Category[];
+  interest: Category[];
   students: Student[];
   classrooms: ClassRoom[];
   news: News[];
@@ -85,6 +86,7 @@ export type IMentorReducerAction =
       payload: {
         teacher: Teacher;
         categories: Category[];
+        interest: Category[];
         students: Student[];
         news: News[];
         tutorials: {

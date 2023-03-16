@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { STUDENTS, SETS, TABS } from 'src/constants/routes';
+import { STUDENTS, SETS, TABS, AUTH } from 'src/constants/routes';
 import { useTeacher } from 'src/hooks';
 import { HomeHeaderView } from 'components/custom';
 import { ProgressComponent, ErrorComponent } from 'components/main';
@@ -14,6 +14,7 @@ import { IHomeDrawerNavigatorParamsList, IHomeStackNavigatorParamsList, IHomeTab
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import PublicSetsList from "./_PublicSetsList";
 
 const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -23,21 +24,26 @@ interface Props
   extends CompositeScreenProps<
     BottomTabScreenProps<IHomeTabNavigatorParamsList, TABS.CLASSROOM>,
     CompositeScreenProps<NativeStackScreenProps<IHomeStackNavigatorParamsList>, DrawerScreenProps<IHomeDrawerNavigatorParamsList>>
-  > {}
+  > { }
 
 const TeacherClassroomScreen = ({ navigation }: Props) => {
   const { state, getProfile, clearError, confirmTutorial, addStudent, addSet } = useTeacher();
 
   const [refreshing, setRefreshing] = useState(false);
-
   useEffect(() => {
     navigation.setOptions({
       tabBarStyle: { display: state.profileInfo !== null ? 'flex' : 'none' },
     });
-    setTimeout(() => {
-      getProfile();
-    }, 100);
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setTimeout(() => {
+        getProfile();
+      }, 50);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -128,6 +134,28 @@ const TeacherClassroomScreen = ({ navigation }: Props) => {
                   });
                 }}
               />
+              {state.interest.length > 0 ?
+                <PublicSetsList
+                  data={state.interest}
+                  showEdit={true}
+                  showAdd={false}
+                  onEdit={() =>
+                    navigation.navigate(SETS.MAIN, { screen: SETS.INTEREST, params: { item: { ...state.profileInfo, type: 1, isUpdate: true, interest: state.interest } } })
+                  }
+                  showList={true}
+                  onAdd={addSet}
+                  onPressItem={item => {
+                    navigation.navigate(SETS.MAIN, {
+                      screen: SETS.DETAILS,
+                      params: {
+                        title: item.name,
+                        id: item._id,
+                        predefined: item.predefined,
+                      },
+                    });
+                  }}
+                />
+                : null}
 
               {state.tutorial.categories && state.categories.length > 0 && (
                 <CustomSetsList

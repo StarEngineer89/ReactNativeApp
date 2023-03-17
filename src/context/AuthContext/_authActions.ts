@@ -89,6 +89,18 @@ const socialLogin = (dispatch: IAuthDispatch) => async (name: string, email: str
   }
 };
 
+const getUser = (dispatch: IAuthDispatch) => async (email: string, type: string,) => {
+  try {
+    const response = await api.post('/users/api/get-user', {
+      email,
+      type,
+    });
+    return response
+  } catch (error) {
+    return error
+  }
+};
+
 const login = (dispatch: IAuthDispatch) => async (email: string, password: string) => {
   try {
     const response = await api.post<ILoginResponse>('/users/api/login', { email, password });
@@ -296,6 +308,7 @@ const authActions = {
   clearReset,
   socialLogin,
   resendVerification,
+  getUser
 };
 
 export default authActions;

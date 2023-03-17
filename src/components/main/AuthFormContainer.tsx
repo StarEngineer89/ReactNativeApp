@@ -9,6 +9,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import { Settings } from 'react-native-fbsdk-next';
 import { LoginManager, AccessToken, } from 'react-native-fbsdk-next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
 
 Settings.setAppID(FACEBOOK_APP_ID);
 Settings.initializeSDK();
@@ -18,8 +19,12 @@ interface AuthFormContainerProps extends ViewProps {
   divider?: string;
 }
 
+interface myEmail {
+  email: string;
+}
+
 const AuthFormContainer = (props: AuthFormContainerProps) => {
-  const { socialLogin } = useAuth();
+  const { socialLogin, getUser } = useAuth();
 
   useEffect(() => {
     // Initial configuration
@@ -90,18 +95,10 @@ const AuthFormContainer = (props: AuthFormContainerProps) => {
         await AsyncStorage.setItem('APPLELOGIN', JSON.stringify(appleAuthRequestResponse));
         socialLogin(name, email, identityToken, 'apple', '');
       } else {
-        const getUser = await AsyncStorage.getItem('APPLELOGIN');
-        const { email, identityToken, fullName } = JSON.parse(getUser);
-        const name = fullName.givenName
-          ? fullName.givenName
-          : fullName.middleName
-          ? fullName.middleName
-          : fullName.familyName
-          ? fullName.familyName
-          : fullName.nickname
-          ? fullName.nickname
-          : 'AppleLogin';
-        socialLogin(name, email, identityToken, 'apple', '');
+        //const getUser = await AsyncStorage.getItem('APPLELOGIN');
+        const result = await getUser(jwt_decode<myEmail>(appleAuthRequestResponse.identityToken).email, "apple");
+        alert(JSON.stringify(result.data.user))
+        socialLogin(result.data.user.name, result.data.user.email, result.data.user.socialId, 'apple', '');
       }
     }
   };

@@ -165,7 +165,7 @@ const StudentClassSetScreen = ({ route, navigation }: Props) => {
         <AvatarSpeakerVolume uri={state.classroom.teacher.image} />
       </TouchableOpacity>
 
-      <SpeakerVolume data={state.currentCategory.children} activeIndex={activeIndex} attr={'studentVoiceURL'} onPress={onStudentSpeakerPressed} />
+        <SpeakerVolume data={state.currentCategory.children} activeIndex={activeIndex} attr={'studentVoiceURL'} onPress={onStudentSpeakerPressed} isPublic={false} />
 
       <MicroPhoneRecorder onStart={() => lottieRef.current.play()} onEnd={() => lottieRef.current.reset()} onFinished={onEndRecording} />
 

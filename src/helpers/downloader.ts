@@ -55,6 +55,7 @@ export const cacheNewVoice = async (category: Recording, oldVoice: string) => {
 
 export const cacheCategoryVoices = async (category: Category[]) => {
   return new Promise(async (resolve, _) => {
+    console.log("===category===", category)
     // removing null voices
     let voices = category.filter(voice => voice.voiceURL !== null);
 
@@ -62,7 +63,7 @@ export const cacheCategoryVoices = async (category: Category[]) => {
     if (voices.length === 0) resolve(category);
 
     let voicesDownloaded: any[] = [];
-
+    console.log("===voices===", voices)
     const promises = voices.map(async v => {
       let localFile = await _checkAndDownload(v.voiceURL);
 

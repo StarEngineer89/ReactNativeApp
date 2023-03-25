@@ -33,7 +33,7 @@ const SetsManageScreen = ({ navigation }: Props) => {
               <GridListItem
                 uri={item.image}
                 defaultSource={item.slug}
-                onPress={() => navigation.navigate(SETS.DETAILS, { title: item.name, id: item._id, predefined: item.predefined })}>
+                onPress={() => navigation.navigate(SETS.DETAILS, { title: item.name, id: item._id, predefined: item.predefined})}>
                 <VStack spacing={5} style={{ flex: 1 }} alignment="leading">
                   <Text numberOfLines={2} style={StyleGuide.typography.gridItemHeader}>
                     {item.name}

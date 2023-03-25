@@ -32,6 +32,25 @@ const getProfile = (dispatch: IMentorDispatch) => async () => {
   }
 };
 
+const getLanguage = () => async () => {
+  try {
+    const response = await api.get('/users/api/language');
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getPublicInterest = () => async (language: String, dialect: String, accent: String) => {
+  const data = { language, dialect, accent }
+  try {
+    const response = await api.post('/users/api/public-category', data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getStudentClassroomCategory =
   (dispatch: IMentorDispatch) => async (studentId: string, classroomId: string, categoryId: string, predefined: boolean) => {
     dispatch({ type: actions.GETTING_STUDENT_CATEGORY });
@@ -92,22 +111,22 @@ const clearMessage = (dispatch: IMentorDispatch) => () => {
 
 const clearError =
   (dispatch: IMentorDispatch) =>
-  (key = 'GENERAL') => {
-    switch (key) {
-      case 'STUDENT':
-        dispatch({ type: actions.SAVING_STUDENT_CLEAR_ERROR });
-        break;
-      case 'SET':
-        dispatch({ type: actions.SAVING_SET_CLEAR_ERROR });
-        break;
-      case 'PROFILE':
-        dispatch({ type: actions.UPDATING_PROFILE_ERROR_CLEAR });
-        break;
-      default:
-        dispatch({ type: actions.CLEAR_ERROR });
-        break;
-    }
-  };
+    (key = 'GENERAL') => {
+      switch (key) {
+        case 'STUDENT':
+          dispatch({ type: actions.SAVING_STUDENT_CLEAR_ERROR });
+          break;
+        case 'SET':
+          dispatch({ type: actions.SAVING_SET_CLEAR_ERROR });
+          break;
+        case 'PROFILE':
+          dispatch({ type: actions.UPDATING_PROFILE_ERROR_CLEAR });
+          break;
+        default:
+          dispatch({ type: actions.CLEAR_ERROR });
+          break;
+      }
+    };
 
 const clearStudentClassroomCategory = (dispatch: IMentorDispatch) => () => {
   dispatch({ type: actions.CLEAR_STUDENT_CATEGORY });
@@ -120,7 +139,7 @@ const rateVoice = (dispatch: IMentorDispatch) => async (studentId: string, child
       type: actions.RATING_VOICE_SUCCEEDED,
       payload: { childId, score },
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const addStudent = (dispatch: IMentorDispatch) => async () => {
@@ -154,7 +173,7 @@ const editStudent = (dispatch: IMentorDispatch) => async (id: string, name: stri
       name,
       categories,
     });
-    console.log("===editStudent____response====",response)
+    console.log("===editStudent____response====", response);
     dispatch({
       type: actions.EDITING_STUDENT_SUCCEEDED,
       payload: response.data.student,
@@ -200,21 +219,20 @@ const deleteStudent = (dispatch: IMentorDispatch) => async (id: string) => {
     await api.delete(`/api/students/${id}`);
 
     dispatch({ type: actions.DELETE_STUDENT_SUCCEEDED, payload: id });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const clearState = (dispatch: IMentorDispatch) => () => {
   dispatch({ type: actions.CLEAR_STATE });
 };
 
-const getCategory = (dispatch: IMentorDispatch) => async (id: string, predefined: boolean) => {
+const getCategory = (dispatch: IMentorDispatch) => async (id: string, predefined: boolean, isPublic: boolean) => {
   try {
-    const response = await api.get<IGetTeacherCategoryResponse>(`/api/teachers/me/category/${id}/${predefined}`);
+    const response = await api.get<IGetTeacherCategoryResponse>(`/api/teachers/me/category/${id}/${predefined}/${isPublic}`);
 
     let payload: any = await cacheCategoryVoices(response.data.category);
-
     dispatch({ type: actions.GET_CATEGORY_PROGRESS, payload });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const clearCategory = (dispatch: IMentorDispatch) => () => {
@@ -368,7 +386,7 @@ const addSetItem = (dispatch: IMentorDispatch) => async (id: string, image: stri
         },
       });
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const deleteSet = (dispatch: IMentorDispatch) => async (id: string) => {
@@ -376,7 +394,7 @@ const deleteSet = (dispatch: IMentorDispatch) => async (id: string) => {
     await api.delete(`/api/teachers/me/category/${id}`);
 
     dispatch({ type: actions.DELETE_SET_SUCCEEDED, payload: id });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const deleteSetItem = (dispatch: IMentorDispatch) => async (id: string) => {
@@ -384,7 +402,7 @@ const deleteSetItem = (dispatch: IMentorDispatch) => async (id: string) => {
     await api.delete(`/api/teachers/me/category/${id}`);
 
     dispatch({ type: actions.DELETE_SET_ITEM_SUCCEEDED, payload: id });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const mentorActions = {
@@ -417,6 +435,9 @@ const mentorActions = {
 
   confirmTutorial,
   setDrawerItem,
+
+  getLanguage,
+  getPublicInterest,
 };
 
 export default mentorActions;

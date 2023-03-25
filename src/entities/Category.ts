@@ -10,6 +10,9 @@ interface Category {
   size: number;
   uploading: boolean;
   voiceURL: string;
+  language: string;
+  dialect: string;
+  accent: string;
 }
 
 interface StudentCategory extends Category {

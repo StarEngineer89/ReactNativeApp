@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { STUDENTS, SETS, TABS, AUTH } from 'src/constants/routes';
+import { STUDENTS, SETS, TABS } from 'src/constants/routes';
 import { useTeacher } from 'src/hooks';
 import { HomeHeaderView } from 'components/custom';
 import { ProgressComponent, ErrorComponent } from 'components/main';
@@ -130,6 +130,7 @@ const TeacherClassroomScreen = ({ navigation }: Props) => {
                       title: item.name,
                       id: item._id,
                       predefined: item.predefined,
+                      isPublic: false
                     },
                   });
                 }}
@@ -151,6 +152,7 @@ const TeacherClassroomScreen = ({ navigation }: Props) => {
                         title: item.name,
                         id: item._id,
                         predefined: item.predefined,
+                        isPublic: true
                       },
                     });
                   }}
@@ -177,6 +179,7 @@ const TeacherClassroomScreen = ({ navigation }: Props) => {
                         id: item._id,
                         predefined: item.predefined,
                         length: item.size,
+                        isPublic: false
                       },
                     });
                   }}

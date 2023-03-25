@@ -89,31 +89,41 @@ const SelectInterestList = ({ data, selected, setSelected, navigateBack, navigat
         />
         <Spacer />
       </HStack> */}
-
-      <GridList
-        data={data}
-        renderDetails={({ item }) => {
-          let isSelected = _checkIfSelected(item);
-          return (
-            <GridListItem
-              uri={item.image}
-              onPress={() => (isSelected ? _deselectItem(item) : _selectItem(item))}
-              style={isSelected && { opacity: 0.7 }}>
-              <VStack style={{ flex: 1, paddingHorizontal: 10 }}>
-                <Spacer />
-                <HStack>
-                  <Text numberOfLines={2} style={styles.textStyle}>
-                    {item.name}
-                  </Text>
+      {data.length > 0 ?
+        <GridList
+          data={data}
+          renderDetails={({ item }) => {
+            let isSelected = _checkIfSelected(item);
+            return (
+              <GridListItem
+                uri={item.image}
+                onPress={() => (isSelected ? _deselectItem(item) : _selectItem(item))}
+                style={isSelected && { opacity: 0.7 }}>
+                <VStack style={{ flex: 1, paddingHorizontal: 10 }}>
                   <Spacer />
-                  <View>{isSelected === true && <View style={styles.dot} />}</View>
-                </HStack>
-                <Spacer />
-              </VStack>
-            </GridListItem>
-          );
-        }}
-      />
+                  <HStack>
+                    <Text numberOfLines={2} style={styles.textStyle}>
+                      {item.name}
+                    </Text>
+                    <Spacer />
+                    <View>{isSelected === true && <View style={styles.dot} />}</View>
+                  </HStack>
+                  <Spacer />
+                </VStack>
+              </GridListItem>
+            );
+          }}
+        /> :
+        <VStack style={{ flex: 1, }}>
+          <Spacer />
+          <HStack>
+            <Text style={[styles.textStyle2]}>
+              No result found
+            </Text>
+            <Spacer />
+          </HStack>
+          <Spacer />
+        </VStack>}
     </ContainerView>
   );
 };
@@ -125,6 +135,15 @@ const styles = StyleSheet.create({
     color: palette.primary,
     flexWrap: 'wrap',
     // width: '80%',
+  },
+  textStyle2: {
+    fontSize: isTablet() ? 21 : 16,
+    fontFamily: fonts.medium,
+    color: palette.primary,
+    flexWrap: 'wrap',
+    width: '100%',
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   dot: {
     width: isTablet() ? 20 : 10,

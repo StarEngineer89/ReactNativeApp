@@ -18,9 +18,10 @@ interface Props {
   attr: string;
   activeIndex: SharedValue<number>;
   onPress: () => void;
+  isPublic: boolean;
 }
 
-const SpeakerVolume = ({ data, attr, activeIndex, onPress }: Props) => {
+const SpeakerVolume = ({ data, attr, activeIndex, onPress, isPublic }: Props) => {
   const progress = useSharedValue(0);
 
   React.useEffect(() => {
@@ -51,9 +52,9 @@ const SpeakerVolume = ({ data, attr, activeIndex, onPress }: Props) => {
   const bottom = isTablet ? (isLandscape ? landscape : height / 2 - 260) : height / 2 - 220;
 
   const right = isTablet ? (isLandscape ? '20%' : (width - 300) / 2) : (width - 200) / 2;
-
+  
   return (
-    <TouchableOpacity style={{ position: 'absolute', bottom, right }} onPress={onPress} activeOpacity={0.5}>
+    <TouchableOpacity style={isPublic ? { position: 'absolute', bottom, } : { position: 'absolute', bottom, right, }} onPress={onPress} activeOpacity={0.5}>
       <View style={[styles.baseCircle, styles.outerCircle]}>
         <View style={[styles.baseCircle, styles.innerCircle, { backgroundColor: '#AAA' }]}>
           <AnimatedGradient

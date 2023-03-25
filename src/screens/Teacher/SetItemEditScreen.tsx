@@ -23,7 +23,7 @@ interface Props
   > {}
 
 const SetItemEditScreen = ({ route, navigation }: Props) => {
-  const { subCategoryIndex, predefined } = route.params;
+  const { subCategoryIndex, predefined, isPublic } = route.params;
 
   const { width, isLandscape } = useDeviceInfo();
 
@@ -133,9 +133,9 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
         </TickerView>
       </View>
 
-      <SpeakerVolume data={state.currentCategory} activeIndex={activeIndex} attr={'voiceURL'} onPress={onSpeakerPressed} />
+      <SpeakerVolume data={state.currentCategory} activeIndex={activeIndex} attr={'voiceURL'} onPress={onSpeakerPressed} isPublic={isPublic} />
 
-      <MicroPhoneRecorder onStart={() => lottieRef.current.play()} onEnd={() => lottieRef.current.reset()} onFinished={onEndRecording} />
+      {!isPublic ? <MicroPhoneRecorder onStart={() => lottieRef.current.play()} onEnd={() => lottieRef.current.reset()} onFinished={onEndRecording} /> : null}
 
       <View
         style={{
@@ -160,7 +160,7 @@ const SetItemEditScreen = ({ route, navigation }: Props) => {
       </View>
 
       <View style={{ position: 'absolute', bottom: StyleGuide.main.isSmallDevice ? 20 : 50 }}>
-        <Button size="md" variant="gradient" title={'Done'} onPress={() => navigation.navigate(SETS.DETAILS, { itemIndex: activeIndex.value })} />
+        <Button size="md" variant="gradient" title={'Done'} onPress={() => navigation.navigate(SETS.DETAILS, { itemIndex: activeIndex.value, isPublic: isPublic })} />
       </View>
     </View>
   );

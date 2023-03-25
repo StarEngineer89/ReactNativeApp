@@ -23,7 +23,7 @@ interface Props
   > {}
 
 const SetDetailsScreen = ({ route, navigation }: Props) => {
-  const { id, predefined } = route.params;
+  const { id, predefined, isPublic } = route.params;
   const { state, getCategory, clearCategory, addSetItem, deleteSetItem } = useTeacher();
   const [showConfirm, setshowConfirm] = useState(false);
   const [deleteItem, setdeleteItem] = useState(null);
@@ -31,7 +31,7 @@ const SetDetailsScreen = ({ route, navigation }: Props) => {
   const [_, setItemIndexIndex] = useState(0);
 
   useEffect(() => {
-    setTimeout(() => getCategory(id, predefined), 1000);
+    setTimeout(() => getCategory(id, predefined, isPublic), 1000);
   }, []);
 
   useEffect(() => {
@@ -86,6 +86,7 @@ const SetDetailsScreen = ({ route, navigation }: Props) => {
                   navigation.push(SETS.EDIT_DETAILS, {
                     subCategoryIndex: index,
                     predefined,
+                    isPublic
                   })
                 }>
                 <VStack style={{ flex: 1 }} alignment="leading">
@@ -102,7 +103,7 @@ const SetDetailsScreen = ({ route, navigation }: Props) => {
                     )}
                   </HStack>
                   <Spacer />
-                  {!item.predefined && (
+                  {!item.predefined && !isPublic &&(
                     <HStack>
                       <Spacer />
                       <Button

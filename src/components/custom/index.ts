@@ -15,3 +15,4 @@ export { default as MenuItem } from './MenuItem';
 export { default as LabelTextInput } from './LabelTextInput';
 export { default as CustomSetImageUploader } from './CustomSetImageUploader';
 export { default as SelectInterestList} from "./SelectInterestList";
+export { default as LanguageList } from "./LanguageList";

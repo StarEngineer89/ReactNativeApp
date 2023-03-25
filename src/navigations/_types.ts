@@ -28,6 +28,7 @@ export type ISetStackNavigatorParamsList = {
   [SETS.EDIT_DETAILS]: {
     subCategoryIndex: number;
     predefined: boolean;
+    isPublic: boolean
   };
   [SETS.DETAILS]?: {
     title?: string;
@@ -35,6 +36,7 @@ export type ISetStackNavigatorParamsList = {
     itemIndex?: number;
     predefined?: boolean;
     length?: number;
+    isPublic?: boolean;
   };
   [SETS.INTEREST]?: {
     item: any;
